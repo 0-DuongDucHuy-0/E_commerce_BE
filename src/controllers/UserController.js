@@ -32,6 +32,34 @@ const signUp = async (req, res) => {
   }
 };
 
+const signIn = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    const reg = /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
+    const isCheckEmail = reg.test(email);
+
+    if (!email || !password) {
+      return res.status(200).json({
+        status: "ERR",
+        meassage: "Thiếu thông tin đăng ký",
+      });
+    } else if (!isCheckEmail) {
+      return res.status(200).json({
+        status: "ERR",
+        meassage: "Email không hợp lệ",
+      });
+    }
+
+    const result = await UserService.signIn(req.body);
+    return res.status(200).json(result);
+  } catch (e) {
+    return res.status(404).json({
+      message: e,
+    });
+  }
+};
+
 const getAllUser = async (req, res) => {
   try {
     const result = await UserService.getAllUser();
@@ -46,4 +74,5 @@ const getAllUser = async (req, res) => {
 module.exports = {
   getAllUser,
   signUp,
+  signIn,
 };

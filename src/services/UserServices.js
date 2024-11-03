@@ -1,14 +1,14 @@
 const pool = require("../models/db");
 const bcrypt = require("bcrypt");
 
-const signUp = (newUser) => {
+const signUp = async (newUser) => {
   const { email, password, role } = newUser;
   const hash_password = bcrypt.hashSync(password, 10);
 
-  return new Promise((resolve, reject) => {
+  return new Promise(async (resolve, reject) => {
     const checkEmailQuery = `SELECT * FROM users WHERE email = ?`;
 
-    pool.query(checkEmailQuery, [email], (err, results) => {
+    await pool.query(checkEmailQuery, [email], (err, results) => {
       if (err) {
         return reject({
           status: "ERROR",
@@ -25,8 +25,9 @@ const signUp = (newUser) => {
         });
       }
     });
+
     const query = `INSERT INTO users (email, password, role) VALUES (?, ?, ?)`;
-    pool.query(query, [email, hash_password, role], (err, data) => {
+    await pool.query(query, [email, hash_password, role], (err, data) => {
       if (err) {
         return reject({
           status: "ERROR",
@@ -44,11 +45,56 @@ const signUp = (newUser) => {
   });
 };
 
+const signIn = async (user) => {
+  const { email, password } = user;
+  return new Promise(async (resolve, reject) => {
+    try {
+      const checkEmailQuery = `SELECT * FROM users WHERE email = ? LIMIT 1`;
+      await pool.query(checkEmailQuery, [email], (err, results) => {
+        if (err) {
+          return reject({
+            status: "ERROR",
+            message: "Lỗi khi kiểm tra email",
+            error: err,
+          });
+        }
+
+        // Nếu email KO tồn tại
+        if (results.length === 0) {
+          return reject({
+            status: "ERROR",
+            message: "Email khônmg tồn tại.",
+          });
+        }
+        // Nếu có email
+        else {
+          const comparePassword = bcrypt.compareSync(
+            password,
+            results[0].password
+          );
+          if (!comparePassword) {
+            resolve({
+              status: "ERR",
+              message: "Sai mật khẩu",
+            });
+          }
+          resolve({
+            status: "OK",
+            message: "SUCCESS",
+          });
+        }
+      });
+    } catch (e) {
+      reject(e);
+    }
+  });
+};
+
 const getAllUser = () => {
-  return new Promise((resolve, reject) => {
+  return new Promise(async (resolve, reject) => {
     const query = "SELECT * FROM users";
 
-    pool.query(query, (err, data) => {
+    await pool.query(query, (err, data) => {
       if (err) {
         return reject({
           status: "ERROR",
@@ -69,4 +115,5 @@ const getAllUser = () => {
 module.exports = {
   getAllUser,
   signUp,
+  signIn,
 };
