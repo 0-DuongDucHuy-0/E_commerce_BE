@@ -106,6 +106,76 @@ const signIn = async (user) => {
   });
 };
 
+const uplateUser = async (userId, data) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const UserQuery = `SELECT * FROM users WHERE user_id = ? LIMIT 1`;
+
+      // lấy ra thông tin
+      const results = await new Promise((resolveQuery, rejectQuery) => {
+        pool.query(UserQuery, [userId], (err, results) => {
+          if (err) {
+            return rejectQuery({
+              status: "ERROR",
+              message: "Lỗi không tồn tại ủe",
+              error: err,
+            });
+          }
+          resolveQuery(results);
+        });
+      });
+
+      console.log("results", results);
+
+      if (results === null) {
+        resolve({
+          status: "OK",
+          message: "Người dùng không tồn tại",
+        });
+      }
+      // const updateUserQuery = `UPDATE users SET ? WHERE user_id = ?`;
+      // let updateData = "";
+      // if (data.password) {
+      //   updateData += " password = " + data.password;
+      // }
+      // if (data.role) {
+      //   updateData += `, role = "` + data.role + `" `;
+      // }
+      const updateUserQuery = "UPDATE users SET ? WHERE user_id = ?";
+      let updateData = {};
+      if (data.password) {
+        const hash_password = bcrypt.hashSync(data.password, 10);
+        updateData.password = hash_password;
+      }
+      if (data.role) {
+        updateData.role = data.role;
+      }
+      console.log("updateData", updateData);
+
+      const updateUser = await new Promise((resolveQuery, rejectQuery) => {
+        pool.query(updateUserQuery, [updateData, userId], (err, results) => {
+          if (err) {
+            return rejectQuery({
+              status: "ERROR",
+              message: "Update thất bại",
+              error: err,
+            });
+          }
+          resolveQuery(results);
+        });
+      });
+
+      resolve({
+        status: "OK",
+        message: "SUCCESS",
+        data: updateUser,
+      });
+    } catch (e) {
+      reject(e);
+    }
+  });
+};
+
 const getAllUser = () => {
   return new Promise(async (resolve, reject) => {
     const query = "SELECT * FROM users";
@@ -132,4 +202,5 @@ module.exports = {
   getAllUser,
   signUp,
   signIn,
+  uplateUser,
 };

@@ -82,7 +82,22 @@ const signOut = async (req, res) => {
 };
 
 const updateUser = async (req, res) => {
-  console.log("oke");
+  try {
+    const userId = req.params.id;
+    const data = req.body;
+    if (!userId) {
+      return res.status(200).json({
+        status: "ERR",
+        meassage: "Không tồn tại tài khoản",
+      });
+    }
+    const response = await UserService.uplateUser(userId, data);
+    return res.status(200).json(response);
+  } catch (e) {
+    return res.status(404).json({
+      message: e,
+    });
+  }
 };
 
 const getAllUser = async (req, res) => {
