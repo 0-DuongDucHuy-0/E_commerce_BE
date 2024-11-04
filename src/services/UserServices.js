@@ -1,5 +1,6 @@
 const pool = require("../models/db");
 const bcrypt = require("bcrypt");
+const { genneralAccessToken, genneralRefreshToken } = require("./JwtServices");
 
 const signUp = async (newUser) => {
   const { email, password, role } = newUser;
@@ -78,9 +79,21 @@ const signIn = async (user) => {
               message: "Sai mật khẩu",
             });
           }
+          // cấp token cho user
+          const access_token = genneralAccessToken({
+            id: results[0].user_id,
+            role: results[0].role,
+          });
+          const refresh_token = genneralRefreshToken({
+            id: results[0].user_id,
+            role: results[0].role,
+          });
+
           resolve({
             status: "OK",
             message: "SUCCESS",
+            access_token,
+            refresh_token,
           });
         }
       });
