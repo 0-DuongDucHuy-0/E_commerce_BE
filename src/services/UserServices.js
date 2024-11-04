@@ -88,7 +88,6 @@ const signIn = async (user) => {
             id: results[0].user_id,
             role: results[0].role,
           });
-
           resolve({
             status: "OK",
             message: "SUCCESS",

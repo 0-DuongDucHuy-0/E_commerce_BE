@@ -1,4 +1,5 @@
 const UserService = require("../services/UserServices");
+const JwtServices = require("../services/JwtServices");
 
 const signUp = async (req, res) => {
   try {
@@ -52,7 +53,13 @@ const signIn = async (req, res) => {
     }
 
     const result = await UserService.signIn(req.body);
-    return res.status(200).json(result);
+    const { refresh_token, ...newResult } = result;
+    res.cookie("refresh_token", refresh_token, {
+      secure: false,
+      httpOnly: true,
+      sameSite: "strict",
+    });
+    return res.status(200).json(newResult);
   } catch (e) {
     return res.status(404).json({
       message: e,
@@ -71,8 +78,27 @@ const getAllUser = async (req, res) => {
   }
 };
 
+const refreshToken = async (req, res) => {
+  try {
+    const token = req.cookies.refresh_token;
+    if (!token) {
+      return res.status(200).json({
+        status: "ERR",
+        meassage: "Không tồn tại token",
+      });
+    }
+    const response = await JwtServices.refreshTokenJwtServices(token);
+    return res.status(200).json(response);
+  } catch (e) {
+    return res.status(404).json({
+      message: e,
+    });
+  }
+};
+
 module.exports = {
   getAllUser,
   signUp,
   signIn,
+  refreshToken,
 };

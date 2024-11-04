@@ -31,12 +31,12 @@ const refreshTokenJwtServices = (token) => {
         if (err) {
           resolve({
             status: "ERR",
-            message: "The authentication",
+            message: "Cant refresh token",
           });
         }
         const access_token = await genneralAccessToken({
-          _id: user?.id,
-          isAdmin: user?.isAdmin,
+          id: user?.user_id,
+          role: user?.role,
         });
         resolve({
           status: "OK",
