@@ -48,53 +48,57 @@ const signUp = async (newUser) => {
 
 const signIn = async (user) => {
   const { email, password } = user;
+
   return new Promise(async (resolve, reject) => {
     try {
       const checkEmailQuery = `SELECT * FROM users WHERE email = ? LIMIT 1`;
-      await pool.query(checkEmailQuery, [email], (err, results) => {
-        if (err) {
-          return reject({
-            status: "ERROR",
-            message: "Lỗi khi kiểm tra email",
-            error: err,
-          });
-        }
 
-        // Nếu email KO tồn tại
-        if (results.length === 0) {
-          return reject({
-            status: "ERROR",
-            message: "Email khônmg tồn tại.",
-          });
-        }
-        // Nếu có email
-        else {
-          const comparePassword = bcrypt.compareSync(
-            password,
-            results[0].password
-          );
-          if (!comparePassword) {
-            resolve({
-              status: "ERR",
-              message: "Sai mật khẩu",
+      // lấy ra thông tin
+      const results = await new Promise((resolveQuery, rejectQuery) => {
+        pool.query(checkEmailQuery, [email], (err, results) => {
+          if (err) {
+            return rejectQuery({
+              status: "ERROR",
+              message: "Lỗi khi kiểm tra email",
+              error: err,
             });
           }
-          // cấp token cho user
-          const access_token = genneralAccessToken({
-            id: results[0].user_id,
-            role: results[0].role,
-          });
-          const refresh_token = genneralRefreshToken({
-            id: results[0].user_id,
-            role: results[0].role,
-          });
-          resolve({
-            status: "OK",
-            message: "SUCCESS",
-            access_token,
-            refresh_token,
-          });
-        }
+          resolveQuery(results);
+        });
+      });
+
+      // Nếu email không tồn tại
+      if (results.length === 0) {
+        return reject({
+          status: "ERROR",
+          message: "Email không tồn tại.",
+        });
+      }
+
+      // Kiểm tra mật khẩu
+      const comparePassword = bcrypt.compareSync(password, results[0].password);
+      if (!comparePassword) {
+        return resolve({
+          status: "ERR",
+          message: "Sai mật khẩu",
+        });
+      }
+
+      // cấp token cho user
+      const access_token = await genneralAccessToken({
+        id: results[0].user_id,
+        role: results[0].role,
+      });
+      const refresh_token = await genneralRefreshToken({
+        id: results[0].user_id,
+        role: results[0].role,
+      });
+
+      return resolve({
+        status: "OK",
+        message: "SUCCESS",
+        access_token,
+        refresh_token,
       });
     } catch (e) {
       reject(e);
