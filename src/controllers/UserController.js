@@ -81,6 +81,10 @@ const signOut = async (req, res) => {
   }
 };
 
+const updateUser = async (req, res) => {
+  console.log("oke");
+};
+
 const getAllUser = async (req, res) => {
   try {
     const result = await UserService.getAllUser();
@@ -116,4 +120,5 @@ module.exports = {
   signIn,
   refreshToken,
   signOut,
+  updateUser,
 };
