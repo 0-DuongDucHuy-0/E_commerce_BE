@@ -67,6 +67,20 @@ const signIn = async (req, res) => {
   }
 };
 
+const signOut = async (req, res) => {
+  try {
+    res.clearCookie("refresh_token");
+    return res.status(200).json({
+      status: "OK",
+      message: "Đăng xuất thành công",
+    });
+  } catch (e) {
+    return res.status(404).json({
+      message: e,
+    });
+  }
+};
+
 const getAllUser = async (req, res) => {
   try {
     const result = await UserService.getAllUser();
@@ -101,4 +115,5 @@ module.exports = {
   signUp,
   signIn,
   refreshToken,
+  signOut,
 };

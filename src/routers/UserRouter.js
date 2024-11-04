@@ -5,6 +5,7 @@ const { authAdminMiddleWare } = require("../middleware/auth");
 
 router.post("/sign-up", userController.signUp);
 router.post("/sign-in", userController.signIn);
+router.post("/sign-out", userController.signOut);
 router.get("/get-all-user", authAdminMiddleWare, userController.getAllUser);
 router.post("/refresh-token", userController.refreshToken);
 
