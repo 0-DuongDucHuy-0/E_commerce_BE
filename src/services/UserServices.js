@@ -176,6 +176,37 @@ const uplateUser = async (userId, data) => {
   });
 };
 
+const deleteUser = (id) => {
+  return new Promise(async (resolve, reject) => {
+    const deleteStudentsQuery = "DELETE FROM students WHERE user_id = ?";
+    await pool.query(deleteStudentsQuery, [id], (err, data) => {
+      if (err) {
+        return reject({
+          status: "ERROR",
+          message: "Lỗi khi xóa tk o bang student",
+          error: err,
+        });
+      }
+    });
+
+    const deleteQuery = "DELETE from users WHERE user_id = ?";
+    await pool.query(deleteQuery, [id], (err, data) => {
+      if (err) {
+        return reject({
+          status: "ERROR",
+          message: "Lỗi khi xóa tk o bang user",
+          error: err,
+        });
+      }
+      resolve({
+        status: "OK",
+        message: "SUCCESS",
+        data: data,
+      });
+    });
+  });
+};
+
 const getAllUser = () => {
   return new Promise(async (resolve, reject) => {
     const query = "SELECT * FROM users";
@@ -203,4 +234,5 @@ module.exports = {
   signUp,
   signIn,
   uplateUser,
+  deleteUser,
 };
