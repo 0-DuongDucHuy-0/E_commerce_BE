@@ -3,7 +3,15 @@ const dotenv = require("dotenv");
 dotenv.config();
 
 const authAdminMiddleWare = (req, res, next) => {
-  const token = req.headers.token.split(" ")[1];
+  const authHeader = req.headers.token;
+  if (!authHeader) {
+    return res.status(401).json({
+      message: "Token không được cung cấp",
+      status: "ERROR",
+    });
+  }
+
+  const token = authHeader.split(" ")[1];
   jwt.verify(token, process.env.ACCESS_TOKEN, (err, user) => {
     if (err) {
       return res.status(400).json({
@@ -25,11 +33,18 @@ const authAdminMiddleWare = (req, res, next) => {
 };
 
 const authUserMiddleWare = (req, res, next) => {
-  const token = req.headers.token.split(" ")[1];
+  const authHeader = req.headers.token;
+  if (!authHeader) {
+    return res.status(401).json({
+      message: "Token không được cung cấp",
+      status: "ERROR",
+    });
+  }
+
+  const token = authHeader.split(" ")[1];
   const userId = req.params.id;
   console.log(token, userId);
   jwt.verify(token, process.env.ACCESS_TOKEN, (err, user) => {
-    console.log("user", user);
     if (err) {
       console.log("err", err);
       return res.status(404).json({
