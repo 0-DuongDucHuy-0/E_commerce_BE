@@ -38,6 +38,6 @@ const createStudent = async (req, res) => {
   }
 };
 
-exports.module = {
+module.exports = {
   createStudent,
 };

@@ -19,7 +19,6 @@ const createStudent = async (studentId, newStudent) => {
       query,
       [
         studentId,
-        user_id,
         full_name,
         dob,
         gender,
