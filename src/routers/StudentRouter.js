@@ -7,8 +7,8 @@ const {
 } = require("../middleware/auth");
 
 router.post("/create-student/:id", authUserMiddleWare, studentController.createStudent);
-// router.put("/update-student/:id", authUserMiddleWare, userController.updateStudent);
-// router.get("/get-detail-student/:id", authUserMiddleWare, userController.getDetailStudent);
-// router.get("/get-all-student", authAdminMiddleWare, userController.getAllStudent);
+router.put("/update-student/:id", studentController.updateStudent);
+// router.get("/get-detail-student/:id", authUserMiddleWare, studentController.getDetailStudent);
+// router.get("/get-all-student", authAdminMiddleWare, studentController.getAllStudent);
 
 module.exports = router;

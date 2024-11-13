@@ -48,6 +48,80 @@ const createStudent = async (studentId, newStudent) => {
   });
 };
 
+const uplateUser = async (studentId, data) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const UserQuery = `SELECT * FROM students WHERE student_id = ? LIMIT 1`;
+
+      // lấy ra thông tin
+      const results = await new Promise((resolveQuery, rejectQuery) => {
+        pool.query(UserQuery, [studentId], (err, results) => {
+          if (err) {
+            return rejectQuery({
+              status: "ERROR",
+              message: "Lỗi không tồn tại ủe",
+              error: err,
+            });
+          }
+          resolveQuery(results);
+        });
+      });
+
+      console.log("results", results);
+
+      if (results === null) {
+        resolve({
+          status: "OK",
+          message: "Người dùng không tồn tại",
+        });
+      }
+
+      console.log("results", results);
+      // const updateUserQuery = `UPDATE users SET ? WHERE user_id = ?`;
+      // let updateData = "";
+      // if (data.password) {
+      //   updateData += " password = " + data.password;
+      // }
+      // if (data.role) {
+      //   updateData += `, role = "` + data.role + `" `;
+      // }
+      const updateUserQuery = "UPDATE students SET ? WHERE student_id = ?";
+      let updateData = {};
+      if (data.phone) {
+        updateData.phone = hash_phone;
+      }
+      if (data.room_id) {
+        updateData.room_id = data.room_id;
+      }
+
+
+      console.log("updateData", updateData);
+
+      const updateUser = await new Promise((resolveQuery, rejectQuery) => {
+        pool.query(updateUserQuery, [updateData, studentId], (err, results) => {
+          if (err) {
+            return rejectQuery({
+              status: "ERROR",
+              message: "Update thất bại",
+              error: err,
+            });
+          }
+          resolveQuery(results);
+        });
+      });
+
+      resolve({
+        status: "OK",
+        message: "SUCCESS",
+        data: updateUser,
+      });
+    } catch (e) {
+      reject(e);
+    }
+  });
+}
+
 module.exports = {
   createStudent,
+  uplateUser
 };

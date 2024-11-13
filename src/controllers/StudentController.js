@@ -38,6 +38,26 @@ const createStudent = async (req, res) => {
   }
 };
 
+const updateStudent = async (req, res) => {
+  try {
+    const studentId = req.params.id;
+    const data = req.body;
+    if (!studentId) {
+      return res.status(200).json({
+        status: "ERR",
+        meassage: "Không tồn tại tài khoản",
+      });
+    }
+    const response = await StudentServices.uplateUser(studentId, data);
+    return res.status(200).json(response);
+  } catch (e) {
+    return res.status(404).json({
+      message: e,
+    });
+  }
+}
+
 module.exports = {
   createStudent,
+  updateStudent
 };

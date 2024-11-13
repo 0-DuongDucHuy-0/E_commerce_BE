@@ -202,7 +202,6 @@ const deleteUser = (id) => {
       }
     });
 
-
     // Xóa sinh viên ở bảng user
     const deleteQuery = "DELETE from users WHERE user_id = ?";
     await pool.query(deleteQuery, [id], (err, data) => {
