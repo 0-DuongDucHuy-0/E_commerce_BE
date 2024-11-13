@@ -178,6 +178,19 @@ const uplateUser = async (userId, data) => {
 
 const deleteUser = (id) => {
   return new Promise(async (resolve, reject) => {
+    // Cập nhật lại số người trong phòng ở bảng rooms
+    const updateCurrentOccupancy = "UPDATE rooms SET current_occupancy = current_occupancy - 1 WHERE room_id = (SELECT room_id FROM students WHERE user_id = ?)";
+    await pool.query(updateCurrentOccupancy, [id], (err, data) => {
+      if (err) {
+        return reject({
+          status: "ERROR",
+          message: "Lỗi khi xóa tk o bang student",
+          error: err,
+        });
+      }
+    });
+
+    // Xóa sinh viên ở bảng students
     const deleteStudentsQuery = "DELETE FROM students WHERE user_id = ?";
     await pool.query(deleteStudentsQuery, [id], (err, data) => {
       if (err) {
@@ -189,6 +202,8 @@ const deleteUser = (id) => {
       }
     });
 
+
+    // Xóa sinh viên ở bảng user
     const deleteQuery = "DELETE from users WHERE user_id = ?";
     await pool.query(deleteQuery, [id], (err, data) => {
       if (err) {

@@ -12,7 +12,7 @@ router.post("/sign-out", userController.signOut);
 router.put("/update-user/:id", authUserMiddleWare, userController.updateUser);
 router.delete(
   "/delete-user/:id",
-  authUserMiddleWare,
+  authAdminMiddleWare,
   userController.deleteUser
 );
 router.get("/get-all-user", authAdminMiddleWare, userController.getAllUser);
