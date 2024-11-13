@@ -43,7 +43,6 @@ const authUserMiddleWare = (req, res, next) => {
 
   const token = authHeader.split(" ")[1];
   const userId = req.params.id;
-  console.log(token, userId);
   jwt.verify(token, process.env.ACCESS_TOKEN, (err, user) => {
     if (err) {
       console.log("err", err);
@@ -52,8 +51,39 @@ const authUserMiddleWare = (req, res, next) => {
         status: "ERROR",
       });
     }
-    if (user?.role === "admin" || user?.id.toString() === userId.toString()) {
+    if (user?.role === "admin" || user?.role === "staff" || user?.id.toString() === userId.toString()) {
       console.log("authUserMiddleWare working");
+      next();
+    } else {
+      return res.status(404).json({
+        message: "The authentication",
+        status: "ERROR",
+      });
+    }
+  });
+};
+
+const authStaffMiddleWare = (req, res, next) => {
+  const authHeader = req.headers.token;
+  if (!authHeader) {
+    return res.status(401).json({
+      message: "Token không được cung cấp",
+      status: "ERROR",
+    });
+  }
+
+  const token = authHeader.split(" ")[1];
+  const staff_id = req.params.id;
+  jwt.verify(token, process.env.ACCESS_TOKEN, (err, user) => {
+    if (err) {
+      console.log("err", err);
+      return res.status(404).json({
+        message: "The authentication: User Middle Ware",
+        status: "ERROR",
+      });
+    }
+    if (user?.role === "admin" || user?.id.toString() === staff_id.toString()) {
+      console.log("authStaffMiddleWare working");
       next();
     } else {
       return res.status(404).json({
@@ -67,4 +97,5 @@ const authUserMiddleWare = (req, res, next) => {
 module.exports = {
   authAdminMiddleWare,
   authUserMiddleWare,
+  authStaffMiddleWare,
 };
