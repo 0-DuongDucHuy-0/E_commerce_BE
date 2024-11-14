@@ -48,7 +48,7 @@ const updateStudent = async (req, res) => {
         meassage: "Không tồn tại tài khoản",
       });
     }
-    const response = await StudentServices.uplateUser(studentId, data);
+    const response = await StudentServices.uplateStudent(studentId, data);
     return res.status(200).json(response);
   } catch (e) {
     return res.status(404).json({
@@ -57,7 +57,19 @@ const updateStudent = async (req, res) => {
   }
 }
 
+const getAllStudent = async (req, res) => {
+  try {
+    const result = await StudentServices.getAllStudent();
+    return res.status(200).json(result);
+  } catch (error) {
+    return res.status(404).json({
+      message: e,
+    });
+  }
+}
+
 module.exports = {
   createStudent,
-  updateStudent
+  updateStudent,
+  getAllStudent
 };

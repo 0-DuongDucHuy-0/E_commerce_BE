@@ -48,7 +48,7 @@ const createStudent = async (studentId, newStudent) => {
   });
 };
 
-const uplateUser = async (studentId, data) => {
+const uplateStudent = async (studentId, data) => {
   return new Promise(async (resolve, reject) => {
     try {
       const UserQuery = `SELECT * FROM students WHERE student_id = ? LIMIT 1`;
@@ -121,7 +121,30 @@ const uplateUser = async (studentId, data) => {
   });
 }
 
+const getAllStudent = async () => {
+  return new Promise(async (resolve, reject) => {
+    const query = "SELECT * FROM students";
+
+    await pool.query(query, (err, data) => {
+      if (err) {
+        return reject({
+          status: "ERROR",
+          message: "Failed to fetch users",
+          error: err,
+        });
+      }
+
+      resolve({
+        status: "OK",
+        message: "SUCCESS",
+        data: data,
+      });
+    });
+  });
+}
+
 module.exports = {
   createStudent,
-  uplateUser
+  uplateStudent,
+  getAllStudent
 };

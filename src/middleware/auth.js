@@ -78,7 +78,7 @@ const authStaffMiddleWare = (req, res, next) => {
     if (err) {
       console.log("err", err);
       return res.status(404).json({
-        message: "The authentication: User Middle Ware",
+        message: "The authentication: Staff Middle Ware",
         status: "ERROR",
       });
     }
