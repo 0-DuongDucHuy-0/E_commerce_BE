@@ -129,7 +129,7 @@ const getAllStudent = async () => {
       if (err) {
         return reject({
           status: "ERROR",
-          message: "Failed to fetch users",
+          message: "Lỗi lấy toàn bộ sinh viên",
           error: err,
         });
       }
@@ -143,8 +143,30 @@ const getAllStudent = async () => {
   });
 }
 
+const getDetailStudent = async (student_id) => {
+  return new Promise(async (resolve, reject) => {
+    const query = "SELECT * FROM students where student_id = ?"
+    await pool.query(query, student_id, (err, data) => {
+      if (err) {
+        return reject({
+          status: "ERROR",
+          message: "Lỗi lấy chi tiết sinh viên",
+          error: err,
+        });
+      }
+
+      resolve({
+        status: "OK",
+        message: "SUCCESS",
+        data: data,
+      })
+    })
+  })
+}
+
 module.exports = {
   createStudent,
   uplateStudent,
-  getAllStudent
+  getAllStudent,
+  getDetailStudent
 };
