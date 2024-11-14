@@ -1,0 +1,14 @@
+const express = require("express");
+const router = express.Router();
+const roomController = require("../controllers/RoomController");
+const {
+    authAdminMiddleWare,
+    authUserMiddleWare,
+    authStaffMiddleWare,
+} = require("../middleware/auth");
+
+// router.put("/update-room/:id", authUserMiddleWare, roomController.updateroom);
+// router.get("/get-detail-room/:id", authUserMiddleWare, roomController.getDetailroom); // lấy cả các sinh viên trong phòng
+router.get("/get-all-room", roomController.getAllRoom); // http://localhost:3001/api/room/get-all-room?gender=male
+
+module.exports = router;
