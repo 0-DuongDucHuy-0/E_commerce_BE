@@ -3,7 +3,7 @@ const bcrypt = require("bcrypt");
 const { genneralAccessToken, genneralRefreshToken } = require("./JwtServices");
 
 const signUp = async (newUser) => {
-  const { email, password, role } = newUser;
+  const { email, password, role = "student" } = newUser;
   const hash_password = bcrypt.hashSync(password, 10);
 
   return new Promise(async (resolve, reject) => {
@@ -176,7 +176,7 @@ const uplateUser = async (userId, data) => {
   });
 };
 
-const deleteUser = (id) => {
+const deleteUser = (id) => { // chỉ xóa được sinh viên
   return new Promise(async (resolve, reject) => {
     // Cập nhật lại số người trong phòng ở bảng rooms
     const updateCurrentOccupancy = "UPDATE rooms SET current_occupancy = current_occupancy - 1 WHERE room_id = (SELECT room_id FROM students WHERE user_id = ?)";
