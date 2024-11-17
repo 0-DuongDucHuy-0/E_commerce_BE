@@ -88,7 +88,7 @@ const uplateStudent = async (studentId, data) => {
       const updateUserQuery = "UPDATE students SET ? WHERE student_id = ?";
       let updateData = {};
       if (data.phone) {
-        updateData.phone = hash_phone;
+        updateData.phone = data.phone;
       }
       if (data.room_id) {
         updateData.room_id = data.room_id;

@@ -30,6 +30,20 @@ const approveDormRequest = async (req, res) => {
     }
 }
 
+const updateStaff = async (req, res) => {
+    try {
+        const staff_id = req.params.id;
+        const data = req.body;
+        const response = await StaffServices.updateStaff(staff_id, data);
+        return res.status(200).json(response);
+    } catch (e) {
+        return res.status(404).json({
+            message: e,
+        });
+    }
+}
+
 module.exports = {
     approveDormRequest,
+    updateStaff
 }

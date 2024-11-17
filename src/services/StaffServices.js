@@ -32,6 +32,37 @@ const approveDormRequest = async (student_id, room_id) => {
     })
 }
 
+const updateStaff = async (staffId, data) => {
+    return new Promise(async (resolve, reject) => {
+        const query = "UPDATE staff SET ? WHERE staff_id = ?"
+        let updateData = {}
+        if (data.full_name) {
+            updateData.full_name = data.full_name;
+        }
+        if (data.phone) {
+            updateData.phone = data.phone;
+        }
+
+        console.log("updateData", updateData);
+
+        await pool.query(query, [updateData, staffId], (err, data) => {
+            if (err) {
+                return reject({
+                    status: "ERROR",
+                    message: "Lỗi khi cập nhật thông tin nhân viên",
+                    error: err,
+                });
+            }
+            resolve({
+                status: "OK",
+                message: "SUCCESS",
+                data: data,
+            });
+        })
+    })
+}
+
 module.exports = {
-    approveDormRequest
+    approveDormRequest,
+    updateStaff
 }
