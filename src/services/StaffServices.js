@@ -62,7 +62,28 @@ const updateStaff = async (staffId, data) => {
     })
 }
 
+const getAllStaff = async () => {
+    return new Promise(async (resolve, reject) => {
+        const query = "SELECT * FROM staff"
+        await pool.query(query, (err, data) => {
+            if (err) {
+                return reject({
+                    status: "ERROR",
+                    message: "Loi lấy toàn bộ nhân viên",
+                    error: err,
+                });
+            }
+            resolve({
+                status: "OK",
+                message: "SUCCESS",
+                data: data,
+            });
+        });
+    });
+}
+
 module.exports = {
     approveDormRequest,
-    updateStaff
+    updateStaff,
+    getAllStaff
 }

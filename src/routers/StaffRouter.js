@@ -7,6 +7,8 @@ const {
     authStaffMiddleWare,
 } = require("../middleware/auth");
 
+// router.get("/get-detail-student/:id", authUserMiddleWare, studentController.getDetailStudent);
+router.get("/get-all-staff", authStaffMiddleWare, staffController.getAllStaff);
 router.put("/update-staff/:id", authStaffMiddleWare, staffController.updateStaff);
 // POST route để duyệt yêu cầu vào ký túc xá sinh viên
 router.post("/approve-dorm-request/:id", authStaffMiddleWare, staffController.approveDormRequest); // lỗi khi gọi api nhiều lần số người trong phòng tăng
