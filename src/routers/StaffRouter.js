@@ -7,7 +7,7 @@ const {
     authStaffMiddleWare,
 } = require("../middleware/auth");
 
-// router.get("/get-detail-student/:id", authUserMiddleWare, studentController.getDetailStudent);
+router.get("/get-detail-staff/:id", authStaffMiddleWare, staffController.getDetailStaff);
 router.get("/get-all-staff", authStaffMiddleWare, staffController.getAllStaff);
 router.put("/update-staff/:id", authStaffMiddleWare, staffController.updateStaff);
 // POST route để duyệt yêu cầu vào ký túc xá sinh viên

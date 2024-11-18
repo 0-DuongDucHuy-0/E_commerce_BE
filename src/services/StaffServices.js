@@ -82,8 +82,29 @@ const getAllStaff = async () => {
     });
 }
 
+const getDetailStaff = async (staffId) => {
+    return new Promise(async (resolve, reject) => {
+        const query = "SELECT * FROM staff WHERE staff_id =?"
+        await pool.query(query, [staffId], (err, data) => {
+            if (err) {
+                return reject({
+                    status: "ERROR",
+                    message: "Loi khi lấy chi tiet thông tin nhân viên",
+                    error: err,
+                });
+            }
+            resolve({
+                status: "OK",
+                message: "SUCCESS",
+                data: data,
+            });
+        });
+    });
+}
+
 module.exports = {
     approveDormRequest,
     updateStaff,
-    getAllStaff
+    getAllStaff,
+    getDetailStaff
 }
