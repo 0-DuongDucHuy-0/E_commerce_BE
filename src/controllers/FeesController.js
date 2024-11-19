@@ -43,7 +43,19 @@ const updateFees = async (req, res) => {
     }
 }
 
+const getAllFees = async (req, res) => {
+    try {
+        const result = await FeesServices.getAllFees();
+        return res.status(200).json(result);
+    } catch (error) {
+        return res.status(404).json({
+            message: error.message,
+        });
+    }
+}
+
 module.exports = {
     createFees,
-    updateFees
+    updateFees,
+    getAllFees
 }
