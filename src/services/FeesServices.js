@@ -74,8 +74,29 @@ const getAllFees = async () => {
     });
 }
 
+const getDetailFees = async (fee_id) => {
+    return new Promise(async (resolve, reject) => {
+        const query = "SELECT * FROM monthly_fees WHERE fee_id =?"
+        await pool.query(query, fee_id, (err, results) => {
+            if (err) {
+                return reject({
+                    status: "ERROR",
+                    message: "Lỗi khi lấy chi tiết chi phí",
+                    error: err,
+                });
+            }
+            resolve({
+                status: "OK",
+                message: "Lấy chi tiết chi phí thành công",
+                data: results,
+            });
+        });
+    });
+}
+
 module.exports = {
     createFees,
     updateFees,
-    getAllFees
+    getAllFees,
+    getDetailFees
 }

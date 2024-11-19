@@ -54,8 +54,27 @@ const getAllFees = async (req, res) => {
     }
 }
 
+const getDetailFees = async (req, res) => {
+    try {
+        const fees_id = req.params.id;
+        if (!fees_id) {
+            return res.status(200).json({
+                status: "ERR",
+                meassage: "chưa có id phòng",
+            });
+        }
+        const result = await FeesServices.getDetailFees(fees_id);
+        return res.status(200).json(result);
+    } catch (error) {
+        return res.status(404).json({
+            message: error.message,
+        });
+    }
+}
+
 module.exports = {
     createFees,
     updateFees,
-    getAllFees
+    getAllFees,
+    getDetailFees
 }
