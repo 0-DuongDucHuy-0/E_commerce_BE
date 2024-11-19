@@ -25,6 +25,25 @@ const createFees = async (req, res) => {
     }
 }
 
+const updateFees = async (req, res) => {
+    try {
+        const fees_id = req.params.id;
+        if (!fees_id) {
+            return res.status(200).json({
+                status: "ERR",
+                meassage: "chưa có id phòng",
+            });
+        }
+        const result = await FeesServices.updateFees(fees_id, req.body);
+        return res.status(200).json(result);
+    } catch (error) {
+        return res.status(404).json({
+            message: error.message,
+        });
+    }
+}
+
 module.exports = {
-    createFees
+    createFees,
+    updateFees
 }
