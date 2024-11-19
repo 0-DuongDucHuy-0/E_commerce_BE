@@ -2,7 +2,7 @@ const UserRouter = require("./UserRouter");
 const StudentRouter = require("./StudentRouter");
 const RoomRouter = require("./RoomRouter");
 const StaffRouter = require("./StaffRouter");
-
+const FeesRouter = require("./FeesRouter");
 
 const routers = (app) => {
   // app.get("/api/user", (req, res) => {
@@ -12,6 +12,7 @@ const routers = (app) => {
   app.use("/api/student", StudentRouter);
   app.use("/api/room", RoomRouter);
   app.use("/api/staff", StaffRouter);
+  app.use("/api/fees", FeesRouter);
 };
 
 module.exports = routers;
