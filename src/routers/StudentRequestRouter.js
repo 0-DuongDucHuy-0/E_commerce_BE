@@ -8,3 +8,12 @@
 //     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- Thời điểm tạo yêu cầu
 //     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP -- Thời điểm cập nhật cuối
 // );
+
+// router.post("/create-request/:id");
+// router.put("/update-request/:id");
+// router.get("/get-all-request/");
+// router.get("/get-detail-request/:id");
+
+
+
+
