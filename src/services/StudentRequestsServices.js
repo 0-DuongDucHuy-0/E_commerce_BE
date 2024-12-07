@@ -31,6 +31,28 @@ const createRequest = async (student_id, dataRequest) => {
     });
 }
 
+const updateRequestByStudent = async (requestId, description) => {
+    return new Promise((resolve, reject) => {
+        const query = "UPDATE student_requests SET description = ? WHERE request_id = ?";
+        pool.query(query, [description, requestId], (err, data) => {
+            if (err) {
+                return reject({
+                    status: "ERROR",
+                    message: "Update req thất bại",
+                    error: err,
+                });
+            }
+            resolve({
+                status: "OK",
+                message: "SUCCESS",
+                data: data,
+            });
+        });
+    });
+};
+
+
 module.exports = {
-    createRequest
+    createRequest,
+    updateRequestByStudent
 };

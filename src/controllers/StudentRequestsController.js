@@ -22,6 +22,27 @@ const createRequest = async (req, res) => {
     }
 }
 
+const updateRequestByStudent = async (req, res) => {
+    try {
+        const request_id = req.params.id;
+        const { description } = req.body;
+        console.log(req.body);
+        if (!description) {
+            return res.status(200).json({
+                status: "ERR",
+                meassage: "Thiếu thông tin chỉnh sửa yêu cầu",
+            });
+        }
+        const result = await StudentRequestsServices.updateRequestByStudent(request_id, description);
+        return res.status(200).json(result);
+    } catch (error) {
+        return res.status(404).json({
+            message: error.message,
+        });
+    }
+}
+
 module.exports = {
-    createRequest
+    createRequest,
+    updateRequestByStudent
 };
