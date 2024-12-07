@@ -61,8 +61,46 @@ const updateRequestByStaff = async (req, res) => {
     }
 }
 
+const getAllRequests = async (req, res) => {
+    try {
+        const result = await StudentRequestsServices.getAllRequests();
+        return res.status(200).json(result);
+    } catch (error) {
+        return res.status(404).json({
+            message: error.message,
+        });
+    }
+}
+
+const getAllRequestsStudent = async (req, res) => {
+    try {
+        const student_id = req.params.id;
+        const result = await StudentRequestsServices.getAllRequestsStudent(student_id);
+        return res.status(200).json(result);
+    } catch (error) {
+        return res.status(404).json({
+            message: error.message,
+        });
+    }
+}
+
+const getDetailRequest = async (req, res) => {
+    try {
+        const request_id = req.params.id;
+        const result = await StudentRequestsServices.getDetailRequest(request_id);
+        return res.status(200).json(result);
+    } catch (error) {
+        return res.status(404).json({
+            message: error.message,
+        });
+    }
+}
+
 module.exports = {
     createRequest,
     updateRequestByStudent,
-    updateRequestByStaff
+    updateRequestByStaff,
+    getAllRequests,
+    getAllRequestsStudent,
+    getDetailRequest
 };

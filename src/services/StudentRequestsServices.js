@@ -71,8 +71,71 @@ const updateRequestByStaff = async (request_id, staff_id, status) => {
     });
 }
 
+const getAllRequests = async () => {
+    return new Promise((resolve, reject) => {
+        const query = "SELECT * FROM student_requests";
+        pool.query(query, (err, data) => {
+            if (err) {
+                return reject({
+                    status: "ERROR",
+                    message: "lỗi khi lấy toàn bộ req",
+                    error: err,
+                });
+            }
+            resolve({
+                status: "OK",
+                message: "SUCCESS",
+                data: data,
+            });
+        });
+    });
+}
+
+const getAllRequestsStudent = async (student_id) => {
+    return new Promise((resolve, reject) => {
+        const query = "SELECT * FROM student_requests WHERE student_id =?";
+        pool.query(query, [student_id], (err, data) => {
+            if (err) {
+                return reject({
+                    status: "ERROR",
+                    message: "Lỗi lấy req của sinh viên",
+                    error: err,
+                });
+            }
+            resolve({
+                status: "OK",
+                message: "SUCCESS",
+                data: data,
+            });
+        });
+    });
+}
+
+const getDetailRequest = async (request_id) => {
+    return new Promise((resolve, reject) => {
+        const query = "SELECT * FROM student_requests WHERE request_id =?";
+        pool.query(query, [request_id], (err, data) => {
+            if (err) {
+                return reject({
+                    status: "ERROR",
+                    message: "Lỗi lấy chi tiết req",
+                    error: err,
+                });
+            }
+            resolve({
+                status: "OK",
+                message: "SUCCESS",
+                data: data,
+            });
+        });
+    });
+}
+
 module.exports = {
     createRequest,
     updateRequestByStudent,
-    updateRequestByStaff
+    updateRequestByStaff,
+    getAllRequests,
+    getAllRequestsStudent,
+    getDetailRequest
 };
