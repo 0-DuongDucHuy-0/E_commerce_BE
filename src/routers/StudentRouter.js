@@ -7,9 +7,9 @@ const {
   authStaffMiddleWare,
 } = require("../middleware/auth");
 
-router.post("/create-student/:id", authUserMiddleWare, studentController.createStudent);
+router.post("/create-student/:id", studentController.createStudent);
 router.put("/update-student/:id", authUserMiddleWare, studentController.updateStudent);
 router.get("/get-detail-student/:id", authUserMiddleWare, studentController.getDetailStudent);
-router.get("/get-all-student", authStaffMiddleWare, studentController.getAllStudent);
+router.get("/get-all-student", studentController.getAllStudent);
 
 module.exports = router;

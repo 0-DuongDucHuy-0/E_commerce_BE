@@ -6,13 +6,24 @@
 //     description TEXT,                          -- Mô tả chi tiết yêu cầu
 //     status ENUM('Chờ xử lý', 'Đã xử lý', 'Từ chối') DEFAULT 'Chờ xử lý', -- Trạng thái yêu cầu
 //     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- Thời điểm tạo yêu cầu
-//     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP -- Thời điểm cập nhật cuối
 // );
 
-// router.post("/create-request/:id");
-// router.put("/update-request/:id");
-// router.get("/get-all-request/");
+const express = require('express');
+const studentRequestsController = require('../controllers/StudentRequestsController');
+const router = express.Router();
+const {
+    authAdminMiddleWare,
+    authUserMiddleWare,
+    authStaffMiddleWare,
+} = require("../middleware/auth");
+
+router.post("/create-request/:id", studentRequestsController.createRequest);
+// router.put("/update-request-by-student/:id"); sinh viên trỉnh sửa
+// router.put("/update-request-by-staff/:id");  phê duyệt bởi quản lý
+// router.get("/get-all-requests/");
 // router.get("/get-detail-request/:id");
+
+module.exports = router;
 
 
 

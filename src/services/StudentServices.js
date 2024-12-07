@@ -143,10 +143,10 @@ const getAllStudent = async () => {
   });
 }
 
-const getDetailStudent = async (student_id) => {
+const getDetailStudent = async (user_id) => {
   return new Promise(async (resolve, reject) => {
-    const query = "SELECT * FROM students where student_id = ?"
-    await pool.query(query, student_id, (err, data) => {
+    const query = "SELECT * FROM students where user_id = ?"
+    await pool.query(query, user_id, (err, data) => {
       if (err) {
         return reject({
           status: "ERROR",

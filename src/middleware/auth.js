@@ -34,6 +34,7 @@ const authAdminMiddleWare = (req, res, next) => {
 
 const authUserMiddleWare = (req, res, next) => {
   const authHeader = req.headers.token;
+  console.log("header", authHeader);
   if (!authHeader) {
     return res.status(401).json({
       message: "Token không được cung cấp",

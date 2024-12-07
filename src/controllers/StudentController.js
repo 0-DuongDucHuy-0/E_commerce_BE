@@ -70,14 +70,14 @@ const getAllStudent = async (req, res) => {
 
 const getDetailStudent = async (req, res) => {
   try {
-    const studentId = req.params.id;
-    if (!studentId) {
+    const user_id = req.params.id;
+    if (!user_id) {
       return res.status(200).json({
         status: "ERR",
         meassage: "Chưa có student id",
       });
     }
-    const result = await StudentServices.getDetailStudent(studentId);
+    const result = await StudentServices.getDetailStudent(user_id);
     return res.status(200).json(result);
   } catch (error) {
     return res.status(404).json({

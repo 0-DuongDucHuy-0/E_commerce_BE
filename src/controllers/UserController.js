@@ -34,6 +34,7 @@ const signUp = async (req, res) => {
 };
 
 const signIn = async (req, res) => {
+  console.log("Sign in");
   try {
     const { email, password } = req.body;
 
@@ -85,6 +86,7 @@ const updateUser = async (req, res) => {
   try {
     const userId = req.params.id;
     const data = req.body;
+    console.log("data", data);
     if (!userId) {
       return res.status(200).json({
         status: "ERR",
