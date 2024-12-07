@@ -19,7 +19,7 @@ const {
 
 router.post("/create-request/:id", studentRequestsController.createRequest);
 router.put("/update-request-by-student/:id", studentRequestsController.updateRequestByStudent); //sinh viên trỉnh sửa
-// router.put("/update-request-by-staff/:id");  phê duyệt bởi quản lý
+router.put("/update-request-by-staff/:id", studentRequestsController.updateRequestByStaff);  //phê duyệt bởi quản lý
 // router.get("/get-all-requests/");
 // router.get("/get-detail-request/:id");
 

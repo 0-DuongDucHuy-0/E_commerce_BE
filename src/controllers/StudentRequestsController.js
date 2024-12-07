@@ -42,7 +42,27 @@ const updateRequestByStudent = async (req, res) => {
     }
 }
 
+const updateRequestByStaff = async (req, res) => {
+    try {
+        const request_id = req.params.id;
+        const { staff_id, status } = req.body;
+        if (!status || !staff_id) {
+            return res.status(200).json({
+                status: "ERR",
+                meassage: "Thiếu thông tin cập nhật req bởi quản lý",
+            });
+        }
+        const result = await StudentRequestsServices.updateRequestByStaff(request_id, staff_id, status);
+        return res.status(200).json(result);
+    } catch (error) {
+        return res.status(404).json({
+            message: error.message,
+        });
+    }
+}
+
 module.exports = {
     createRequest,
-    updateRequestByStudent
+    updateRequestByStudent,
+    updateRequestByStaff
 };

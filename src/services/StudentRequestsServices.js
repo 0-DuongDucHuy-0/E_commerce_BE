@@ -51,8 +51,28 @@ const updateRequestByStudent = async (requestId, description) => {
     });
 };
 
+const updateRequestByStaff = async (request_id, staff_id, status) => {
+    return new Promise((resolve, reject) => {
+        const query = "UPDATE student_requests SET staff_id = ?, status = ? WHERE request_id = ?";
+        pool.query(query, [staff_id, status, request_id], (err, data) => {
+            if (err) {
+                return reject({
+                    status: "ERROR",
+                    message: "Update req bởi staff thất bại",
+                    error: err,
+                });
+            }
+            resolve({
+                status: "OK",
+                message: "SUCCESS",
+                data: data,
+            });
+        });
+    });
+}
 
 module.exports = {
     createRequest,
-    updateRequestByStudent
+    updateRequestByStudent,
+    updateRequestByStaff
 };
