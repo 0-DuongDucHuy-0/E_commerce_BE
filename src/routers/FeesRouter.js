@@ -9,6 +9,7 @@ const {
 
 router.get("/get-detail-fees/:id", feesController.getDetailFees);
 router.get("/get-all-fees", feesController.getAllFees);
+router.get("/get-all-fees-room/:id", feesController.getAllFeesRoom);
 router.post("/create-fees/:id", authStaffMiddleWare, feesController.createFees);
 router.put("/update-fees/:id", authStaffMiddleWare, feesController.updateFees);
 
