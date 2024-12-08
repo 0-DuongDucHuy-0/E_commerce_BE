@@ -1,16 +1,16 @@
 const pool = require("../models/db");
 
-const createRequest = async (student_id, dataRequest) => {
+const createRequest = async (user_id, dataRequest) => {
     const {
         request_type, description
     } = dataRequest;
 
     return new Promise(async (resolve, reject) => {
-        const query = `INSERT INTO student_requests (student_id, request_type, description) VALUES (?, ?, ?)`;
+        const query = `INSERT INTO student_requests (user_id, request_type, description) VALUES (?, ?, ?)`;
         await pool.query(
             query,
             [
-                student_id,
+                user_id,
                 request_type, description
             ],
             (err, data) => {
@@ -73,7 +73,7 @@ const updateRequestByStaff = async (request_id, staff_id, status) => {
 
 const getAllRequests = async () => {
     return new Promise((resolve, reject) => {
-        const query = "SELECT * FROM student_requests";
+        const query = "SELECT * FROM student_requests INNER JOIN students ON student_requests.user_id = students.user_id";
         pool.query(query, (err, data) => {
             if (err) {
                 return reject({
@@ -91,10 +91,10 @@ const getAllRequests = async () => {
     });
 }
 
-const getAllRequestsStudent = async (student_id) => {
+const getAllRequestsStudent = async (user_id) => {
     return new Promise((resolve, reject) => {
-        const query = "SELECT * FROM student_requests WHERE student_id =?";
-        pool.query(query, [student_id], (err, data) => {
+        const query = "SELECT * FROM student_requests WHERE user_id =?";
+        pool.query(query, [user_id], (err, data) => {
             if (err) {
                 return reject({
                     status: "ERROR",

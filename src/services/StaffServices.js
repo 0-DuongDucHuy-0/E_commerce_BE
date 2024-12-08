@@ -84,7 +84,7 @@ const getAllStaff = async () => {
 
 const getDetailStaff = async (staffId) => {
     return new Promise(async (resolve, reject) => {
-        const query = "SELECT * FROM staff WHERE staff_id =?"
+        const query = "SELECT * FROM staff WHERE user_id =?"
         await pool.query(query, [staffId], (err, data) => {
             if (err) {
                 return reject({

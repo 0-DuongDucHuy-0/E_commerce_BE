@@ -2,7 +2,7 @@ const StudentRequestsServices = require("../services/StudentRequestsServices");
 
 const createRequest = async (req, res) => {
     try {
-        const student_id = req.params.id;
+        const user_id = req.params.id;
         const { request_type, description } = req.body;
         if (
             !request_type ||
@@ -13,7 +13,7 @@ const createRequest = async (req, res) => {
                 meassage: "Thiếu thông tin tọa yêu cầu",
             });
         }
-        const result = await StudentRequestsServices.createRequest(student_id, req.body);
+        const result = await StudentRequestsServices.createRequest(user_id, req.body);
         return res.status(200).json(result);
     } catch (error) {
         return res.status(404).json({
@@ -74,8 +74,8 @@ const getAllRequests = async (req, res) => {
 
 const getAllRequestsStudent = async (req, res) => {
     try {
-        const student_id = req.params.id;
-        const result = await StudentRequestsServices.getAllRequestsStudent(student_id);
+        const user_id = req.params.id;
+        const result = await StudentRequestsServices.getAllRequestsStudent(user_id);
         return res.status(200).json(result);
     } catch (error) {
         return res.status(404).json({
