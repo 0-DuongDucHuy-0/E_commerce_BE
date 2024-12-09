@@ -4,9 +4,9 @@ const getAllRoom = async (gender) => {
     return new Promise(async (resolve, reject) => {
         let query;
         if (gender === "male") {
-            query = "SELECT * FROM rooms WHERE room_number LIKE '%A%'";
+            query = "SELECT * FROM rooms WHERE room_number LIKE '%A%' AND current_occupancy < capacity";
         } else if (gender === "female") {
-            query = "SELECT * FROM rooms WHERE room_number LIKE '%B%'";
+            query = "SELECT * FROM rooms WHERE room_number LIKE '%B%' AND current_occupancy < capacity";
         } else {
             query = "SELECT * FROM rooms";
         }
@@ -50,7 +50,40 @@ const getDetailRoom = async (roomId) => {
     })
 }
 
+const updateRoom = async (roomId, data) => {
+
+    return new Promise(async (resolve, reject) => {
+        console.log("data", data);
+        const updateQuery = "UPDATE rooms SET ? WHERE room_id = ?";
+        let updateData = {};
+        if (data.capacity !== undefined) {
+            updateData.capacity = data.capacity;
+        }
+        if (data.current_occupancy !== undefined) {
+            updateData.current_occupancy = data.current_occupancy;
+        }
+        console.log("updateData", updateData);
+
+        await pool.query(updateQuery, [updateData, roomId], (err, data) => {
+            if (err) {
+                return reject({
+                    status: "ERROR",
+                    message: "lỗi update chi tiết phòng",
+                    error: err,
+                });
+            }
+
+            resolve({
+                status: "OK",
+                message: "SUCCESS",
+                data: data,
+            });
+        })
+    })
+}
+
 module.exports = {
     getAllRoom,
-    getDetailRoom
+    getDetailRoom,
+    updateRoom
 };

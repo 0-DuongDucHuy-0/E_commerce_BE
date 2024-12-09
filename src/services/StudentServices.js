@@ -51,6 +51,7 @@ const createStudent = async (studentId, newStudent) => {
 const uplateStudent = async (studentId, data) => {
   return new Promise(async (resolve, reject) => {
     try {
+      console.log("data", data);
       const UserQuery = `SELECT * FROM students WHERE student_id = ? LIMIT 1`;
 
       // lấy ra thông tin
@@ -67,8 +68,6 @@ const uplateStudent = async (studentId, data) => {
         });
       });
 
-      console.log("results", results);
-
       if (results === null) {
         resolve({
           status: "OK",
@@ -76,7 +75,6 @@ const uplateStudent = async (studentId, data) => {
         });
       }
 
-      console.log("results", results);
       // const updateUserQuery = `UPDATE users SET ? WHERE user_id = ?`;
       // let updateData = "";
       // if (data.password) {
@@ -93,7 +91,9 @@ const uplateStudent = async (studentId, data) => {
       if (data.room_id) {
         updateData.room_id = data.room_id;
       }
-
+      if (data.approved) {
+        updateData.approved = data.approved;
+      }
 
       console.log("updateData", updateData);
 
