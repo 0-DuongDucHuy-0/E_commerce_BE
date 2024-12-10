@@ -83,7 +83,7 @@ const authStaffMiddleWare = (req, res, next) => {
         status: "ERROR",
       });
     }
-    if (user?.role === "admin" || user?.id.toString() === staff_id.toString()) {
+    if (user?.role === "admin" || user?.role === "staff" || user?.id.toString() === staff_id.toString()) {
       console.log("authStaffMiddleWare working");
       next();
     } else {

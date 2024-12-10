@@ -56,7 +56,7 @@ const updateFees = async (fee_id, data) => {
 
 const getAllFees = async () => {
     return new Promise(async (resolve, reject) => {
-        const query = "SELECT * FROM monthly_fees";
+        const query = "SELECT * FROM monthly_fees JOIN rooms ON monthly_fees.room_id = rooms.room_id";
         await pool.query(query, (err, results) => {
             if (err) {
                 return reject({
