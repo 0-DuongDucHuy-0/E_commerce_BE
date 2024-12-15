@@ -82,8 +82,29 @@ const updateRoom = async (roomId, data) => {
     })
 }
 
+const createRoom = async (data) => {
+    return new Promise(async (resolve, reject) => {
+        const createQuery = "INSERT INTO rooms SET room_number = ?, capacity = ?, dorm_id = 1, current_occupancy = 0";
+        await pool.query(createQuery, [data.room_number, data.capacity], (err, results) => {
+            if (err) {
+                return reject({
+                    status: "ERROR",
+                    message: "Lỗi khi tạo phòng",
+                    error: err,
+                });
+            }
+            resolve({
+                status: "OK",
+                message: "Tạo chi phí thành công",
+                data: results,
+            });
+        });
+    });
+}
+
 module.exports = {
     getAllRoom,
     getDetailRoom,
-    updateRoom
+    updateRoom,
+    createRoom
 };

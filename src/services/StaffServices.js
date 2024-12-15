@@ -34,6 +34,7 @@ const approveDormRequest = async (student_id, room_id) => {
 
 const updateStaff = async (staffId, data) => {
     return new Promise(async (resolve, reject) => {
+        console.log("update", data, staffId);
         const query = "UPDATE staff SET ? WHERE staff_id = ?"
         let updateData = {}
         if (data.full_name) {
@@ -64,7 +65,7 @@ const updateStaff = async (staffId, data) => {
 
 const getAllStaff = async () => {
     return new Promise(async (resolve, reject) => {
-        const query = "SELECT * FROM staff"
+        const query = "SELECT staff.*, email FROM staff JOIN users ON staff.user_id = users.user_id"
         await pool.query(query, (err, data) => {
             if (err) {
                 return reject({

@@ -6,9 +6,6 @@ const FeesRouter = require("./FeesRouter");
 const StudentRequestRouter = require("./StudentRequestRouter");
 
 const routers = (app) => {
-  // app.get("/api/user", (req, res) => {
-  //   res.send("Hello from user API");
-  // });
   app.use("/api/user", UserRouter);
   app.use("/api/student", StudentRouter);
   app.use("/api/room", RoomRouter);
