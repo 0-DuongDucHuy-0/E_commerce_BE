@@ -6,14 +6,14 @@ const createFees = async (req, res) => {
         if (!rooms_id) {
             return res.status(200).json({
                 status: "ERR",
-                meassage: "chưa có id phòng không hợp lệ",
+                message: "chưa có id phòng không hợp lệ",
             });
         }
         const { ktx_fee, electricity_fee, water_fee } = req.body;
         if (!electricity_fee || !water_fee) {
             return res.status(200).json({
                 status: "ERR",
-                meassage: "Chưa nhập tiền điện/nước không hợp lệ",
+                message: "Chưa nhập tiền điện/nước không hợp lệ",
             });
         }
         const result = await FeesServices.createFees(rooms_id, req.body);
@@ -31,7 +31,7 @@ const updateFees = async (req, res) => {
         if (!fees_id) {
             return res.status(200).json({
                 status: "ERR",
-                meassage: "chưa có id phòng",
+                message: "chưa có id phòng",
             });
         }
         const result = await FeesServices.updateFees(fees_id, req.body);
@@ -60,7 +60,7 @@ const getDetailFees = async (req, res) => {
         if (!fees_id) {
             return res.status(200).json({
                 status: "ERR",
-                meassage: "chưa có id phòng",
+                message: "chưa có id phòng",
             });
         }
         const result = await FeesServices.getDetailFees(fees_id);
@@ -78,7 +78,7 @@ const getAllFeesRoom = async (req, res) => {
         if (!rooms_id) {
             return res.status(200).json({
                 status: "ERR",
-                meassage: "chưa có id phòng",
+                message: "chưa có id phòng",
             });
         }
         const result = await FeesServices.getAllFeesRoom(rooms_id);

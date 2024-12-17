@@ -10,7 +10,7 @@ const createRequest = async (req, res) => {
         ) {
             return res.status(200).json({
                 status: "ERR",
-                meassage: "Thiếu thông tin tọa yêu cầu",
+                message: "Thiếu thông tin tọa yêu cầu",
             });
         }
         const result = await StudentRequestsServices.createRequest(user_id, req.body);
@@ -30,7 +30,7 @@ const updateRequestByStudent = async (req, res) => {
         if (!description) {
             return res.status(200).json({
                 status: "ERR",
-                meassage: "Thiếu thông tin chỉnh sửa yêu cầu",
+                message: "Thiếu thông tin chỉnh sửa yêu cầu",
             });
         }
         const result = await StudentRequestsServices.updateRequestByStudent(request_id, description);
@@ -49,7 +49,7 @@ const updateRequestByStaff = async (req, res) => {
         if (!status || !staff_id) {
             return res.status(200).json({
                 status: "ERR",
-                meassage: "Thiếu thông tin cập nhật req bởi quản lý",
+                message: "Thiếu thông tin cập nhật req bởi quản lý",
             });
         }
         const result = await StudentRequestsServices.updateRequestByStaff(request_id, staff_id, status);

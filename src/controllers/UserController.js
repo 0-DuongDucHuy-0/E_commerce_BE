@@ -10,17 +10,17 @@ const signUp = async (req, res) => {
     if (!email || !password || !confirmPassword) {
       return res.status(200).json({
         status: "ERR",
-        meassage: "Thiếu thông tin đăng ký",
+        message: "Thiếu thông tin đăng ký",
       });
     } else if (!isCheckEmail) {
       return res.status(200).json({
         status: "ERR",
-        meassage: "Email không hợp lệ",
+        message: "Email không hợp lệ",
       });
     } else if (password != confirmPassword) {
       return res.status(200).json({
         status: "ERR",
-        meassage: "Xác nhận mật khẩu không hợp lệ",
+        message: "Xác nhận mật khẩu không hợp lệ",
       });
     }
 
@@ -43,12 +43,12 @@ const signIn = async (req, res) => {
     if (!email || !password) {
       return res.status(200).json({
         status: "ERR",
-        meassage: "Thiếu thông tin đăng ký",
+        message: "Thiếu thông tin đăng ký",
       });
     } else if (!isCheckEmail) {
       return res.status(200).json({
         status: "ERR",
-        meassage: "Email không hợp lệ",
+        message: "Email không hợp lệ",
       });
     }
 
@@ -89,7 +89,7 @@ const updateUser = async (req, res) => {
     if (!userId) {
       return res.status(200).json({
         status: "ERR",
-        meassage: "Không tồn tại tài khoản",
+        message: "Không tồn tại tài khoản",
       });
     }
     const response = await UserService.uplateUser(userId, data);
@@ -107,7 +107,7 @@ const deleteUser = async (req, res) => {
     if (!userId) {
       return res.status(200).json({
         status: "ERR",
-        meassage: "Không tồn tại tài khoản",
+        message: "Không tồn tại tài khoản",
       });
     }
     const response = await UserService.deleteUser(userId);
@@ -136,7 +136,7 @@ const refreshToken = async (req, res) => {
     if (!token) {
       return res.status(200).json({
         status: "ERR",
-        meassage: "Không tồn tại token",
+        message: "Không tồn tại token",
       });
     }
     const response = await JwtServices.refreshTokenJwtServices(token);

@@ -11,7 +11,7 @@ const approveDormRequest = async (req, res) => {
             if (!room_id) {
                 return res.status(200).json({
                     status: "ERR",
-                    meassage: "Chưa chọn phòng",
+                    message: "Chưa chọn phòng",
                 });
             } else {
                 const response = await StaffServices.approveDormRequest(student_id, room_id);

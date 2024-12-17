@@ -26,7 +26,7 @@ const createStudent = async (req, res) => {
     ) {
       return res.status(200).json({
         status: "ERR",
-        meassage: "Thiếu thông tin đăng ký",
+        message: "Thiếu thông tin đăng ký",
       });
     }
     const result = await StudentServices.createStudent(studentId, req.body);
@@ -45,7 +45,7 @@ const updateStudent = async (req, res) => {
     if (!studentId) {
       return res.status(200).json({
         status: "ERR",
-        meassage: "Không tồn tại tài khoản",
+        message: "Không tồn tại tài khoản",
       });
     }
     const response = await StudentServices.uplateStudent(studentId, data);
@@ -74,7 +74,7 @@ const getDetailStudent = async (req, res) => {
     if (!user_id) {
       return res.status(200).json({
         status: "ERR",
-        meassage: "Chưa có student id",
+        message: "Chưa có student id",
       });
     }
     const result = await StudentServices.getDetailStudent(user_id);
