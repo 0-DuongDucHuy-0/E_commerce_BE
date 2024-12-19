@@ -1,5 +1,25 @@
 const pool = require("../models/db");
 
+const createStaff = (data) => {
+    return new Promise(async (resolve, reject) => {
+        const createQuery = "INSERT INTO staff SET user_id = ?, full_name = ?, phone = ?";
+        await pool.query(createQuery, [data.user_id, data.full_name, data.phone], (err, results) => {
+            if (err) {
+                return reject({
+                    status: "ERROR",
+                    message: "Lỗi khi tạo staff",
+                    error: err,
+                });
+            }
+            resolve({
+                status: "OK",
+                message: "Tạo staff thành công",
+                data: results,
+            });
+        });
+    });
+}
+
 const approveDormRequest = async (student_id, room_id) => {
     return new Promise(async (resolve, reject) => {
         // tăng số lượng trong rooms thêm 1 người
@@ -107,5 +127,6 @@ module.exports = {
     approveDormRequest,
     updateStaff,
     getAllStaff,
-    getDetailStaff
+    getDetailStaff,
+    createStaff
 }

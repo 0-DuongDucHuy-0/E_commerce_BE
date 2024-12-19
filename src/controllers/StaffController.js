@@ -1,5 +1,17 @@
 const StaffServices = require("../services/StaffServices");
 
+const createStaff = async (req, res) => {
+    try {
+        const data = req.body;
+        const response = await StaffServices.createStaff(data);
+        return res.status(200).json(response);
+    } catch (e) {
+        return res.status(404).json({
+            message: e,
+        });
+    }
+}
+
 const approveDormRequest = async (req, res) => {
     try {
         const student_id = req.params.id;
@@ -70,5 +82,6 @@ module.exports = {
     approveDormRequest,
     updateStaff,
     getAllStaff,
-    getDetailStaff
+    getDetailStaff,
+    createStaff
 }

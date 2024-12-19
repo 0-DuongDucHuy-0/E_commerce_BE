@@ -7,6 +7,7 @@ const {
     authStaffMiddleWare,
 } = require("../middleware/auth");
 
+router.post("/create-staff", staffController.createStaff);
 router.get("/get-detail-staff/:id", authStaffMiddleWare, staffController.getDetailStaff);
 router.get("/get-all-staff", staffController.getAllStaff);
 router.put("/update-staff/:id", authStaffMiddleWare, staffController.updateStaff);
