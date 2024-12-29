@@ -7,7 +7,7 @@ const signUp = async (newUser) => {
   const hash_password = bcrypt.hashSync(password, 10);
 
   return new Promise(async (resolve, reject) => {
-    const checkEmailQuery = `SELECT * FROM users WHERE email = ?`;
+    const checkEmailQuery = `SELECT * FROM users WHERE Email = ?`;
 
     await pool.query(checkEmailQuery, [email], (err, results) => {
       if (err) {
@@ -27,7 +27,7 @@ const signUp = async (newUser) => {
       }
     });
 
-    const query = `INSERT INTO users (email, password, role) VALUES (?, ?, ?)`;
+    const query = `INSERT INTO users (Email, PasswordHash, Role) VALUES (?, ?, ?)`;
     await pool.query(query, [email, hash_password, role], (err, data) => {
       if (err) {
         return reject({
@@ -49,9 +49,11 @@ const signUp = async (newUser) => {
 const signIn = async (user) => {
   const { email, password } = user;
 
+  console.log('signin', user)
+
   return new Promise(async (resolve, reject) => {
     try {
-      const checkEmailQuery = `SELECT * FROM users WHERE email = ? LIMIT 1`;
+      const checkEmailQuery = `SELECT * FROM users WHERE Email = ? LIMIT 1`;
 
       // lấy ra thông tin
       const results = await new Promise((resolveQuery, rejectQuery) => {
@@ -76,7 +78,7 @@ const signIn = async (user) => {
       }
 
       // Kiểm tra mật khẩu
-      const comparePassword = bcrypt.compareSync(password, results[0].password);
+      const comparePassword = bcrypt.compareSync(password, results[0].PasswordHash);
       if (!comparePassword) {
         return resolve({
           status: "ERR",
@@ -86,12 +88,12 @@ const signIn = async (user) => {
 
       // cấp token cho user
       const access_token = await genneralAccessToken({
-        id: results[0].user_id,
-        role: results[0].role,
+        id: results[0].UserID,
+        role: results[0].Role,
       });
       const refresh_token = await genneralRefreshToken({
-        id: results[0].user_id,
-        role: results[0].role,
+        id: results[0].UserID,
+        role: results[0].Role,
       });
 
       return resolve({
@@ -109,7 +111,7 @@ const signIn = async (user) => {
 const uplateUser = async (userId, data) => {
   return new Promise(async (resolve, reject) => {
     try {
-      const UserQuery = `SELECT * FROM users WHERE user_id = ? LIMIT 1`;
+      const UserQuery = `SELECT * FROM users WHERE UserID = ? LIMIT 1`;
 
       // lấy ra thông tin
       const results = await new Promise((resolveQuery, rejectQuery) => {
@@ -117,7 +119,7 @@ const uplateUser = async (userId, data) => {
           if (err) {
             return rejectQuery({
               status: "ERROR",
-              message: "Lỗi không tồn tại ủe",
+              message: "Lỗi không tồn tại user",
               error: err,
             });
           }
@@ -133,22 +135,14 @@ const uplateUser = async (userId, data) => {
           message: "Người dùng không tồn tại",
         });
       }
-      // const updateUserQuery = `UPDATE users SET ? WHERE user_id = ?`;
-      // let updateData = "";
-      // if (data.password) {
-      //   updateData += " password = " + data.password;
-      // }
-      // if (data.role) {
-      //   updateData += `, role = "` + data.role + `" `;
-      // }
-      const updateUserQuery = "UPDATE users SET ? WHERE user_id = ?";
+      const updateUserQuery = "UPDATE users SET ? WHERE UserID = ?";
       let updateData = {};
       if (data.password) {
         const hash_password = bcrypt.hashSync(data.password, 10);
-        updateData.password = hash_password;
+        updateData.PasswordHash = hash_password;
       }
       if (data.role) {
-        updateData.role = data.role;
+        updateData.Role = data.role;
       }
       console.log("updateData", updateData);
 
@@ -173,51 +167,6 @@ const uplateUser = async (userId, data) => {
     } catch (e) {
       reject(e);
     }
-  });
-};
-
-const deleteUser = (id) => { // chỉ xóa được sinh viên
-  return new Promise(async (resolve, reject) => {
-    // Cập nhật lại số người trong phòng ở bảng rooms
-    const updateCurrentOccupancy = "UPDATE rooms SET current_occupancy = current_occupancy - 1 WHERE room_id = (SELECT room_id FROM students WHERE user_id = ?)";
-    await pool.query(updateCurrentOccupancy, [id], (err, data) => {
-      if (err) {
-        return reject({
-          status: "ERROR",
-          message: "Lỗi khi xóa tk o bang student",
-          error: err,
-        });
-      }
-    });
-
-    // Xóa sinh viên ở bảng students
-    const deleteStudentsQuery = "DELETE FROM students WHERE user_id = ?";
-    await pool.query(deleteStudentsQuery, [id], (err, data) => {
-      if (err) {
-        return reject({
-          status: "ERROR",
-          message: "Lỗi khi xóa tk o bang student",
-          error: err,
-        });
-      }
-    });
-
-    // Xóa sinh viên ở bảng user
-    const deleteQuery = "DELETE from users WHERE user_id = ?";
-    await pool.query(deleteQuery, [id], (err, data) => {
-      if (err) {
-        return reject({
-          status: "ERROR",
-          message: "Lỗi khi xóa tk o bang user",
-          error: err,
-        });
-      }
-      resolve({
-        status: "OK",
-        message: "SUCCESS",
-        data: data,
-      });
-    });
   });
 };
 
@@ -248,5 +197,4 @@ module.exports = {
   signUp,
   signIn,
   uplateUser,
-  deleteUser,
 };

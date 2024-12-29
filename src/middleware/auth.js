@@ -43,6 +43,9 @@ const authUserMiddleWare = (req, res, next) => {
 
   const token = authHeader.split(" ")[1];
   const userId = req.params.id;
+
+  console.log("userId", userId, token);
+
   jwt.verify(token, process.env.ACCESS_TOKEN, (err, user) => {
     if (err) {
       console.log("err", err);
@@ -51,7 +54,8 @@ const authUserMiddleWare = (req, res, next) => {
         status: "ERROR",
       });
     }
-    if (user?.role === "admin" || user?.role === "staff" || user?.id.toString() === userId.toString()) {
+    console.log("user123", user)
+    if (user?.role === "admin" || user?.role === "buyer" || user?.role === "seller" || user?.id.toString() === userId.toString()) {
       console.log("authUserMiddleWare working");
       next();
     } else {
@@ -63,7 +67,7 @@ const authUserMiddleWare = (req, res, next) => {
   });
 };
 
-const authStaffMiddleWare = (req, res, next) => {
+const authBuyerMiddleWare = (req, res, next) => {
   const authHeader = req.headers.token;
   if (!authHeader) {
     return res.status(401).json({
@@ -78,12 +82,43 @@ const authStaffMiddleWare = (req, res, next) => {
     if (err) {
       console.log("err", err);
       return res.status(404).json({
-        message: "The authentication: Staff Middle Ware",
+        message: "The authentication: buyer Middle Ware",
         status: "ERROR",
       });
     }
-    if (user?.role === "admin" || user?.id.toString() === staff_id.toString()) {
-      console.log("authStaffMiddleWare working");
+    if (user?.role === "buyer" || user?.id.toString() === staff_id.toString()) {
+      console.log("auth Buyer working");
+      next();
+    } else {
+      return res.status(404).json({
+        message: "The authentication",
+        status: "ERROR",
+      });
+    }
+  });
+};
+
+const authSellerMiddleWare = (req, res, next) => {
+  const authHeader = req.headers.token;
+  if (!authHeader) {
+    return res.status(401).json({
+      message: "Token không được cung cấp",
+      status: "ERROR",
+    });
+  }
+
+  const token = authHeader.split(" ")[1];
+  const staff_id = req.params.id;
+  jwt.verify(token, process.env.ACCESS_TOKEN, (err, user) => {
+    if (err) {
+      console.log("err", err);
+      return res.status(404).json({
+        message: "The authentication: seller Middle Ware",
+        status: "ERROR",
+      });
+    }
+    if (user?.role === "seller" || user?.id.toString() === staff_id.toString()) {
+      console.log("auth Seller MiddleWare working");
       next();
     } else {
       return res.status(404).json({
@@ -97,5 +132,6 @@ const authStaffMiddleWare = (req, res, next) => {
 module.exports = {
   authAdminMiddleWare,
   authUserMiddleWare,
-  authStaffMiddleWare,
+  authBuyerMiddleWare,
+  authSellerMiddleWare,
 };
