@@ -1,10 +1,10 @@
 const ProductImageServices = require("../services/ProductImageServices");
 
-const uploadImage = async (res, req) => {
+const uploadImage = async (req, res) => {
     try {
-        const { product_id, name, path } = req.body;
+        const { product_id, path } = req.body;
 
-        if (!product_id || !name || !path) {
+        if (!product_id || !path) {
             return res.status(200).json({
                 status: "ERR",
                 message: "Thiếu thông tin ảnh sản phẩm",
