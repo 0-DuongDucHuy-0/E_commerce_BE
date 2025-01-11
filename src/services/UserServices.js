@@ -3,11 +3,13 @@ const bcrypt = require("bcrypt");
 const { genneralAccessToken, genneralRefreshToken } = require("./JwtServices");
 
 const signUp = async (newUser) => {
-  const { email, password, role = "student" } = newUser;
+  console.log("signUp", newUser)
+  const { email, password, phone, address } = newUser;
+  const name = email.split('@')[0];
   const hash_password = bcrypt.hashSync(password, 10);
 
   return new Promise(async (resolve, reject) => {
-    const checkEmailQuery = `SELECT * FROM users WHERE Email = ?`;
+    const checkEmailQuery = `SELECT * FROM users WHERE email = ?`;
 
     await pool.query(checkEmailQuery, [email], (err, results) => {
       if (err) {
@@ -27,8 +29,8 @@ const signUp = async (newUser) => {
       }
     });
 
-    const query = `INSERT INTO users (Email, PasswordHash, Role) VALUES (?, ?, ?)`;
-    await pool.query(query, [email, hash_password, role], (err, data) => {
+    const query = `INSERT INTO users (name, email, password, phone,	address) VALUES (?, ?, ?,?,?)`;
+    await pool.query(query, [name, email, hash_password, phone, address], (err, data) => {
       if (err) {
         return reject({
           status: "ERROR",
@@ -53,7 +55,7 @@ const signIn = async (user) => {
 
   return new Promise(async (resolve, reject) => {
     try {
-      const checkEmailQuery = `SELECT * FROM users WHERE Email = ? LIMIT 1`;
+      const checkEmailQuery = `SELECT * FROM users WHERE email = ? LIMIT 1`;
 
       // lấy ra thông tin
       const results = await new Promise((resolveQuery, rejectQuery) => {
@@ -78,7 +80,7 @@ const signIn = async (user) => {
       }
 
       // Kiểm tra mật khẩu
-      const comparePassword = bcrypt.compareSync(password, results[0].PasswordHash);
+      const comparePassword = bcrypt.compareSync(password, results[0].password);
       if (!comparePassword) {
         return resolve({
           status: "ERR",
@@ -88,12 +90,12 @@ const signIn = async (user) => {
 
       // cấp token cho user
       const access_token = await genneralAccessToken({
-        id: results[0].UserID,
-        role: results[0].Role,
+        id: results[0].id,
+        email: results[0].email,
       });
       const refresh_token = await genneralRefreshToken({
-        id: results[0].UserID,
-        role: results[0].Role,
+        id: results[0].id,
+        email: results[0].email,
       });
 
       return resolve({

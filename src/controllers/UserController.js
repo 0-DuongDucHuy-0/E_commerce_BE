@@ -3,11 +3,13 @@ const JwtServices = require("../services/JwtServices");
 
 const signUp = async (req, res) => {
   try {
-    const { email, password, confirmPassword } = req.body;
+    const { email, password, confirmPassword, phone, address } = req.body;
     const reg = /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
     const isCheckEmail = reg.test(email);
 
-    if (!email || !password || !confirmPassword) {
+    console.log(req)
+
+    if (!email || !password || !confirmPassword || !phone || !address) {
       return res.status(200).json({
         status: "ERR",
         message: "Thiếu thông tin đăng ký",
@@ -71,6 +73,7 @@ const signIn = async (req, res) => {
 const signOut = async (req, res) => {
   try {
     res.clearCookie("refresh_token");
+    console.log("Refresh token is delete")
     return res.status(200).json({
       status: "OK",
       message: "Đăng xuất thành công",

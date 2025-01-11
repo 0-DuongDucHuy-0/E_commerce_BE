@@ -35,10 +35,9 @@ const refreshTokenJwtServices = (token) => {
             message: "Cant refresh token",
           });
         }
-        console.log("user111", user)
         const access_token = await genneralAccessToken({
           id: user?.id,
-          role: user?.role,
+          email: user?.email,
         });
         resolve({
           status: "OK",
