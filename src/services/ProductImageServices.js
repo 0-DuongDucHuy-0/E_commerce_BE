@@ -22,6 +22,27 @@ const uploadImage = (data) => {
     });
 }
 
+const getAllImagesById = (product_id) => {
+    return new Promise(async (resolve, reject) => {
+        const query = `SELECT * FROM products_images WHERE product_id = ?`;
+        await pool.query(query, [product_id], (err, data) => {
+            if (err) {
+                return reject({
+                    status: "ERROR",
+                    message: "Lấy ảnh không thành công",
+                    error: err,
+                });
+            }
+            resolve({
+                status: "OK",
+                message: "SUCCESS",
+                data: data,
+            });
+        });
+    });
+};
+
 module.exports = {
-    uploadImage
+    uploadImage,
+    getAllImagesById
 };

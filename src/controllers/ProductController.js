@@ -20,6 +20,38 @@ const createProduct = async (req, res) => {
     }
 }
 
+const getAllProducts = async (req, res) => {
+    try {
+        const result = await ProductServices.getAllProducts();
+        return res.status(200).json(result);
+    } catch (e) {
+        return res.status(404).json({
+            message: e,
+        });
+    }
+}
+
+const getDetailProduct = async (req, res) => {
+    try {
+        const product_id = req.params.id;
+        if (!product_id) {
+            return res.status(200).json({
+                status: "ERR",
+                message: "Chưa có student id",
+            });
+        }
+        console.log("111", product_id);
+        const result = await ProductServices.getDetailProduct(product_id);
+        return res.status(200).json(result);
+    } catch (e) {
+        return res.status(404).json({
+            message: e,
+        });
+    }
+}
+
 module.exports = {
-    createProduct
+    createProduct,
+    getAllProducts,
+    getDetailProduct
 }

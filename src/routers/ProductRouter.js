@@ -6,6 +6,8 @@ const {
     authUserMiddleWare,
 } = require("../middleware/auth");
 
+router.get("/get-all-products", ProductController.getAllProducts);
+router.get("/get-detail-product/:id", ProductController.getDetailProduct);
 router.post("/create-product", ProductController.createProduct);
 
 module.exports = router;
