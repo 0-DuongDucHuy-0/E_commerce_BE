@@ -27,6 +27,27 @@ const createRatting = async (req, res) => {
     }
 }
 
+const updateRatting = async (req, res) => {
+    try {
+        console.log("uuuu", req.body)
+        const { rating_id } = req.body;
+        if (!rating_id) {
+            return res.status(200).json({
+                status: "ERR",
+                message: "Chưa có rating_id",
+            });
+        }
+
+        const result = await RattingServices.updateRatting(req.body);
+        return res.status(200).json(result);
+    } catch (e) {
+        return res.status(404).json({
+            message: e,
+        });
+    }
+}
+
 module.exports = {
     createRatting,
+    updateRatting
 }

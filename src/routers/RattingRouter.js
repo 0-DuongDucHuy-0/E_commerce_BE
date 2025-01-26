@@ -7,5 +7,6 @@ const {
 } = require("../middleware/auth");
 
 router.post("/create-ratting", RattingController.createRatting);
+router.post("/update-ratting", RattingController.updateRatting);
 
 module.exports = router;
