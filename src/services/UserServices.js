@@ -194,9 +194,37 @@ const getAllUser = () => {
   });
 };
 
+const getDetailUser = (userId) => {
+  return new Promise((resolve, reject) => {
+    const query = "SELECT * FROM users WHERE id = ? LIMIT 1";
+    pool.query(query, [userId], (err, data) => {
+      if (err) {
+        return reject({
+          status: "ERROR",
+          message: "Failed to fetch user",
+          error: err,
+        });
+      }
+      if (data.length === 0) {
+        return reject({
+          status: "ERROR",
+          message: "User not found",
+        });
+      }
+      resolve({
+        status: "OK",
+        message: "SUCCESS",
+        data: data[0],
+      });
+    });
+  });
+};
+
+
 module.exports = {
   getAllUser,
   signUp,
   signIn,
   uplateUser,
+  getDetailUser,
 };

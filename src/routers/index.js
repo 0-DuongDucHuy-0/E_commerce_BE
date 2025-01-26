@@ -2,6 +2,9 @@ const UserRouter = require("./UserRouter");
 const UpLoadImgRouter = require("./UploadImgRouter");
 const ProductImageRouter = require("./ProductImageRouter");
 const ProductRouter = require("./ProductRouter");
+const OrderRouter = require("./OrderRouter");
+const TransactionRouter = require("./TransactionRouter");
+const RattingRouter = require("./RattingRouter");
 
 
 const routers = (app) => {
@@ -9,6 +12,9 @@ const routers = (app) => {
   app.use("/api/upload", UpLoadImgRouter);
   app.use("/api/productImage", ProductImageRouter);
   app.use("/api/product", ProductRouter);
+  app.use("/api/order", OrderRouter);
+  app.use("/api/transaction", TransactionRouter);
+  app.use("/api/ratting", RattingRouter);
 };
 
 module.exports = routers;

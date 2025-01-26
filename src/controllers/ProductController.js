@@ -40,7 +40,6 @@ const getDetailProduct = async (req, res) => {
                 message: "Chưa có student id",
             });
         }
-        console.log("111", product_id);
         const result = await ProductServices.getDetailProduct(product_id);
         return res.status(200).json(result);
     } catch (e) {
