@@ -11,6 +11,14 @@ const createOrder = (user_id, data) => {
         payment_method,
     } = data;
 
+    console.log("Creating", price,
+        total_quantity,
+        order_status_payment, // Default to 0 if not provided
+        order_status_transport, // Default to 0 if not provided
+        note,
+        address,
+        payment_method,);
+
     return new Promise(async (resolve, reject) => {
         const query = `
         INSERT INTO orders 
@@ -33,7 +41,7 @@ const createOrder = (user_id, data) => {
                 if (err) {
                     return reject({
                         status: "ERROR",
-                        message: "Tạo đơn hàng không thành công",
+                        message: "Tạo đơn hàng không thành công order",
                         error: err,
                     });
                 }

@@ -14,7 +14,7 @@ const routers = (app) => {
   app.use("/api/product", ProductRouter);
   app.use("/api/order", OrderRouter);
   app.use("/api/transaction", TransactionRouter);
-  app.use("/api/ratting", RattingRouter);
+  app.use("/api/rating", RattingRouter);
 };
 
 module.exports = routers;

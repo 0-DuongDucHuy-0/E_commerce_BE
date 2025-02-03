@@ -47,7 +47,27 @@ const updateRatting = async (req, res) => {
     }
 }
 
+const getRatingByProduct = async (req, res) => {
+    try {
+        const { product_id } = req.body;
+        if (!product_id) {
+            return res.status(200).json({
+                status: "ERR",
+                message: "Chưa có product_id",
+            });
+        }
+        const result = await RattingServices.getRatingByProduct(product_id);
+        return res.status(200).json(result);
+    } catch (e) {
+        return res.status(404).json({
+            message: e,
+        });
+
+    }
+}
+
 module.exports = {
     createRatting,
-    updateRatting
+    updateRatting,
+    getRatingByProduct
 }

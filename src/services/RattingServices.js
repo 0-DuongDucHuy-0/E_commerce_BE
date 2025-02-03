@@ -61,8 +61,31 @@ const updateRatting = async (data) => {
     }
 };
 
+const getRatingByProduct = (product_id) => {
+    return new Promise((resolve, reject) => {
+        const query = "SELECT * FROM ratings WHERE product_id = ?";
+        pool.query(query, [product_id], (err, result) => {
+            if (err) {
+                console.error("Database query error:", err); // Log lỗi để debug
+                return reject({
+                    status: "ERROR",
+                    message: "Lấy đánh giá theo sản phẩm không thành công",
+                    error: err.message || err,
+                });
+            }
+
+            resolve({
+                status: "OK",
+                message: "SUCCESS",
+                data: result,
+            });
+        });
+    });
+};
+
 
 module.exports = {
     createRatting,
-    updateRatting
+    updateRatting,
+    getRatingByProduct
 };

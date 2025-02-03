@@ -8,5 +8,6 @@ const {
 
 router.post("/create-ratting", RattingController.createRatting);
 router.post("/update-ratting", RattingController.updateRatting);
+router.get("/get-rating-by-product", RattingController.getRatingByProduct);
 
 module.exports = router;
