@@ -6,8 +6,8 @@ const {
     authUserMiddleWare,
 } = require("../middleware/auth");
 
-router.post("/create-ratting", RattingController.createRatting);
-router.post("/update-ratting", RattingController.updateRatting);
-router.get("/get-rating-by-product", RattingController.getRatingByProduct);
+router.post("/create-rating", RattingController.createRatting);
+router.post("/update-rating", RattingController.updateRatting);
+router.get("/get-rating-by-product/:id", RattingController.getRatingByProduct);
 
 module.exports = router;

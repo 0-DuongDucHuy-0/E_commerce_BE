@@ -49,7 +49,8 @@ const updateRatting = async (req, res) => {
 
 const getRatingByProduct = async (req, res) => {
     try {
-        const { product_id } = req.body;
+        const product_id = req.params.id;
+        console.log("product_id", product_id)
         if (!product_id) {
             return res.status(200).json({
                 status: "ERR",

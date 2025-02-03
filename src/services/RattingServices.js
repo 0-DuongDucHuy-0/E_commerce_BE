@@ -63,10 +63,9 @@ const updateRatting = async (data) => {
 
 const getRatingByProduct = (product_id) => {
     return new Promise((resolve, reject) => {
-        const query = "SELECT * FROM ratings WHERE product_id = ?";
+        const query = "SELECT ratings.*, users.name FROM ratings JOIN users ON ratings.user_id = users.id WHERE ratings.product_id = ?";
         pool.query(query, [product_id], (err, result) => {
             if (err) {
-                console.error("Database query error:", err); // Log lỗi để debug
                 return reject({
                     status: "ERROR",
                     message: "Lấy đánh giá theo sản phẩm không thành công",
