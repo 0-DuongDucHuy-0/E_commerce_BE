@@ -113,7 +113,7 @@ const signIn = async (user) => {
 const uplateUser = async (userId, data) => {
   return new Promise(async (resolve, reject) => {
     try {
-      const UserQuery = `SELECT * FROM users WHERE UserID = ? LIMIT 1`;
+      const UserQuery = `SELECT * FROM users WHERE id = ? LIMIT 1`;
 
       // lấy ra thông tin
       const results = await new Promise((resolveQuery, rejectQuery) => {
@@ -137,14 +137,20 @@ const uplateUser = async (userId, data) => {
           message: "Người dùng không tồn tại",
         });
       }
-      const updateUserQuery = "UPDATE users SET ? WHERE UserID = ?";
+      const updateUserQuery = "UPDATE users SET ? WHERE id = ?";
       let updateData = {};
       if (data.password) {
         const hash_password = bcrypt.hashSync(data.password, 10);
-        updateData.PasswordHash = hash_password;
+        updateData.password = hash_password;
       }
-      if (data.role) {
-        updateData.Role = data.role;
+      if (data.address) {
+        updateData.address = data.address;
+      }
+      if (data.phone) {
+        updateData.phone = data.phone;
+      }
+      if (data.name) {
+        updateData.name = data.name;
       }
       console.log("updateData", updateData);
 
@@ -220,6 +226,72 @@ const getDetailUser = (userId) => {
   });
 };
 
+const changePassword = async (userId, data) => {
+  console.log("change password", userId, data);
+  return new Promise(async (resolve, reject) => {
+    try {
+      const UserQuery = `SELECT * FROM users WHERE id = ? LIMIT 1`;
+
+      // lấy ra thông tin
+      const results = await new Promise((resolveQuery, rejectQuery) => {
+        pool.query(UserQuery, [userId], (err, results) => {
+          if (err) {
+            return rejectQuery({
+              status: "ERROR",
+              message: "Lỗi không tồn tại user",
+              error: err,
+            });
+          }
+          resolveQuery(results);
+        });
+      });
+
+      console.log("results", results);
+
+      if (results === null) {
+        resolve({
+          status: "OK",
+          message: "Người dùng không tồn tại",
+        });
+      }
+      const comparePassword = bcrypt.compareSync(data.password, results[0].password);
+      if (!comparePassword) {
+        return reject({
+          status: "ERROR",
+          message: "Sai mật khẩu",
+        });
+      }
+      const updateUserQuery = "UPDATE users SET ? WHERE id = ?";
+      let updateData = {};
+      if (data.newPassword) {
+        const hash_password = bcrypt.hashSync(data.newPassword, 10);
+        updateData.password = hash_password;
+      }
+      console.log("updateData", updateData);
+
+      const updateUser = await new Promise((resolveQuery, rejectQuery) => {
+        pool.query(updateUserQuery, [updateData, userId], (err, results) => {
+          if (err) {
+            return rejectQuery({
+              status: "ERROR",
+              message: "Update thất bại",
+              error: err,
+            });
+          }
+          resolveQuery(results);
+        });
+      });
+
+      resolve({
+        status: "OK",
+        message: "SUCCESS",
+        data: updateUser,
+      });
+    } catch (e) {
+      reject(e);
+    }
+  });
+};
 
 module.exports = {
   getAllUser,
@@ -227,4 +299,5 @@ module.exports = {
   signIn,
   uplateUser,
   getDetailUser,
+  changePassword,
 };

@@ -153,6 +153,32 @@ const getDetailUser = async (req, res) => {
   }
 }
 
+const changePassword = async (req, res) => {
+  try {
+    const userId = req.params.id;
+    const { password, newPassword } = req.body;
+    console.log("data", req.body);
+    if (!userId) {
+      return res.status(200).json({
+        status: "ERR",
+        message: "Không tồn tại tài khoản",
+      });
+    }
+    if (!password || !newPassword) {
+      return res.status(200).json({
+        status: "ERR",
+        message: "Không đủ dữ liệu để dổi mk",
+      });
+    }
+    const response = await UserService.changePassword(userId, req.body);
+    return res.status(200).json(response);
+  } catch (e) {
+    return res.status(404).json({
+      message: e,
+    });
+  }
+};
+
 module.exports = {
   getAllUser,
   signUp,
@@ -161,4 +187,5 @@ module.exports = {
   signOut,
   updateUser,
   getDetailUser,
+  changePassword,
 };

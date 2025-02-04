@@ -9,7 +9,8 @@ const {
 router.post("/sign-up", userController.signUp);
 router.post("/sign-in", userController.signIn);
 router.post("/sign-out", userController.signOut);
-router.put("/update-user/:id", authUserMiddleWare, userController.updateUser);
+router.put("/update-user/:id", userController.updateUser);
+router.put("/change-password/:id", userController.changePassword);
 router.get("/get-all-user", userController.getAllUser);
 router.get("/get-detail-user/:id", userController.getDetailUser);
 router.post("/refresh-token", userController.refreshToken);
