@@ -2,9 +2,9 @@ const ProductServices = require("../services/ProductServices");
 
 const createProduct = async (req, res) => {
     try {
-        const { name, description, content, avatar, category_id, price } = req.body;
+        const { name, description, content, avatar, category_id, price, author, publisher, dimensions, publication_year, page_count, weight, cover_type } = req.body;
 
-        if (!name || !description || !content || !avatar || !category_id || !price) {
+        if (!name || !description || !content || !avatar || !category_id || !price || !author || !publisher || !dimensions || !publication_year || !page_count || !weight || !cover_type) {
             return res.status(200).json({
                 status: "ERR",
                 message: "Thiếu thông tin sản phẩm",
