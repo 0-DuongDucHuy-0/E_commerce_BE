@@ -92,10 +92,12 @@ const signIn = async (user) => {
       const access_token = await genneralAccessToken({
         id: results[0].id,
         email: results[0].email,
+        role: results[0].role,
       });
       const refresh_token = await genneralRefreshToken({
         id: results[0].id,
         email: results[0].email,
+        role: results[0].role,
       });
 
       return resolve({
@@ -180,7 +182,7 @@ const uplateUser = async (userId, data) => {
 
 const getAllUser = () => {
   return new Promise(async (resolve, reject) => {
-    const query = "SELECT * FROM users";
+    const query = "SELECT * FROM users Where role != 'admin'";
 
     await pool.query(query, (err, data) => {
       if (err) {
@@ -201,6 +203,7 @@ const getAllUser = () => {
 };
 
 const getDetailUser = (userId) => {
+  console.log("getDetailUser", userId);
   return new Promise((resolve, reject) => {
     const query = "SELECT * FROM users WHERE id = ? LIMIT 1";
     pool.query(query, [userId], (err, data) => {

@@ -54,6 +54,26 @@ const createTransactions = async (req, res) => {
     }
 }
 
+const getAllTransactionsByUser = async (req, res) => {
+    try {
+        console.log(req.body)
+        const { user_id, product_id } = req.body;
+        if (!user_id || !product_id) {
+            return res.status(200).json({
+                status: "ERR",
+                message: "Chưa có user_id hoặc product_id",
+            });
+        }
+        const result = await TransactionServices.getAllTransactionsByUser(user_id, product_id);
+        return res.status(200).json(result);
+    } catch (e) {
+        return res.status(404).json({
+            message: e,
+        });
+    }
+}
+
 module.exports = {
     createTransactions,
+    getAllTransactionsByUser
 }

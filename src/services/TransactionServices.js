@@ -24,7 +24,29 @@ const createTransactions = async (data) => {
     });
 };
 
+const getAllTransactionsByUser = async (user_id, product_id) => {
+    return new Promise((resolve, reject) => {
+        const query = `SELECT transactions.*, orders.user_id FROM transactions LEFT JOIN orders ON orders.id = transactions.order_id WHERE user_id =? AND product_id =?`;
+        pool.query(query, [user_id, product_id], (err, result) => {
+            if (err) {
+                return reject({
+                    status: "ERROR",
+                    message: "Lấy đơn hàng của người dùng không thành công",
+                    error: err,
+                });
+            }
+            resolve({
+                status: "OK",
+                message: "SUCCESS",
+                data: result,
+            });
+        });
+    });
+};
+
+
 
 module.exports = {
     createTransactions,
+    getAllTransactionsByUser
 };

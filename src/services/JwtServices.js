@@ -38,6 +38,7 @@ const refreshTokenJwtServices = (token) => {
         const access_token = await genneralAccessToken({
           id: user?.id,
           email: user?.email,
+          role: user?.role,
         });
         resolve({
           status: "OK",
