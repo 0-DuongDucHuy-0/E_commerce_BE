@@ -55,7 +55,27 @@ const createOrder = (user_id, data) => {
     });
 };
 
+const getAllOrders = () => {
+    return new Promise(async (resolve, reject) => {
+        const query = "SELECT orders.*, users.name, users.email, users.phone FROM orders INNER JOIN users ON orders.user_id = users.id";
+        await pool.query(query, [], (err, data) => {
+            if (err) {
+                return reject({
+                    status: "ERROR",
+                    message: "Lấy tất cả đơn hàng không thành công",
+                    error: err,
+                });
+            }
+            resolve({
+                status: "OK",
+                message: "SUCCESS",
+                data: data,
+            });
+        });
+    });
+};
 
 module.exports = {
     createOrder,
+    getAllOrders
 };
