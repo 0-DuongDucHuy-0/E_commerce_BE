@@ -6,6 +6,7 @@ const OrderRouter = require("./OrderRouter");
 const TransactionRouter = require("./TransactionRouter");
 const RattingRouter = require("./RattingRouter");
 const CategoryRouter = require("./CategoryRouter");
+const ChatBotConversationRouter = require("./ChatBotConversationRouter");
 
 
 const routers = (app) => {
@@ -17,6 +18,7 @@ const routers = (app) => {
   app.use("/api/transaction", TransactionRouter);
   app.use("/api/rating", RattingRouter);
   app.use("/api/category", CategoryRouter);
+  app.use("/api/chat", ChatBotConversationRouter);
 };
 
 module.exports = routers;
