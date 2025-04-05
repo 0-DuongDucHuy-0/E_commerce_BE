@@ -85,8 +85,27 @@ const updateOrders = async (req, res) => {
     }
 }
 
+const getAllOrdersByUser = async (req, res) => {
+    try {
+        const user_id = req.params.id;
+        if (!user_id) {
+            return res.status(200).json({
+                status: "ERR",
+                message: "Chưa có user_id",
+            });
+        }
+        const result = await OrderServices.getAllOrdersByUser(user_id);
+        return res.status(200).json(result);
+    } catch (e) {
+        return res.status(404).json({
+            message: e,
+        });
+    }
+}
+
 module.exports = {
     createOrder,
     getAllOrders,
-    updateOrders
+    updateOrders,
+    getAllOrdersByUser
 }

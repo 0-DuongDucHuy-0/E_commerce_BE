@@ -109,8 +109,29 @@ const updateOrder = (order_id, body) => {
     });
 };
 
+const getAllOrdersByUser = (user_id) => {
+    return new Promise(async (resolve, reject) => {
+        const query = "SELECT * FROM orders WHERE user_id =?";
+        await pool.query(query, [user_id], (err, data) => {
+            if (err) {
+                return reject({
+                    status: "ERROR",
+                    message: "Lấy đơn hàng của user không thành công",
+                    error: err,
+                });
+            }
+            resolve({
+                status: "OK",
+                message: "SUCCESS",
+                data: data,
+            });
+        });
+    });
+}
+
 module.exports = {
     createOrder,
     getAllOrders,
-    updateOrder
+    updateOrder,
+    getAllOrdersByUser
 };
