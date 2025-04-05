@@ -59,7 +59,34 @@ const getAllOrders = async (req, res) => {
     }
 }
 
+const updateOrders = async (req, res) => {
+    try {
+        const order_id = req.params.id;
+        if (!order_id) {
+            return res.status(200).json({
+                status: "ERR",
+                message: "Chưa có order_id",
+            });
+        }
+        const { order_status_payment, order_status_transport } = req.body
+        console.log(`Update order`, req.body)
+        if (!order_status_payment && !order_status_transport) {
+            return res.status(400).json({
+                status: "ERROR",
+                message: "Thiếu dữ liệu cập nhật đơn hàng",
+            });
+        }
+        const result = await OrderServices.updateOrder(order_id, req.body);
+        return res.status(200).json(result);
+    } catch (e) {
+        return res.status(404).json({
+            message: e,
+        });
+    }
+}
+
 module.exports = {
     createOrder,
-    getAllOrders
+    getAllOrders,
+    updateOrders
 }

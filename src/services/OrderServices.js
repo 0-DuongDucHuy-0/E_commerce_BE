@@ -75,7 +75,42 @@ const getAllOrders = () => {
     });
 };
 
+const updateOrder = (order_id, body) => {
+    const {
+        order_status_payment,
+        order_status_transport,
+    } = body;
+
+    return new Promise((resolve, reject) => {
+        const query = `
+            UPDATE orders
+            SET order_status_payment = ?, order_status_transport = ?
+            WHERE id = ?
+        `;
+
+        pool.query(
+            query,
+            [order_status_payment, order_status_transport, order_id],
+            (err, result) => {
+                if (err) {
+                    return reject({
+                        status: "ERROR",
+                        message: "Cập nhật đơn hàng không thành công",
+                        error: err,
+                    });
+                }
+                resolve({
+                    status: "OK",
+                    message: "Cập nhật đơn hàng thành công",
+                    data: result,
+                });
+            }
+        );
+    });
+};
+
 module.exports = {
     createOrder,
-    getAllOrders
+    getAllOrders,
+    updateOrder
 };

@@ -15,7 +15,7 @@ const signUp = async (newUser) => {
       if (err) {
         return reject({
           status: "ERROR",
-          message: "Lỗi khi kiểm tra email",
+          message: "Lỗi khi kiểm tra email 1",
           error: err,
         });
       }

@@ -8,5 +8,6 @@ const {
 
 router.post("/create-order/:id", OrderController.createOrder);
 router.get("/get-all-orders", OrderController.getAllOrders);
+router.put("/update-orders/:id", OrderController.updateOrders);
 
 module.exports = router;
