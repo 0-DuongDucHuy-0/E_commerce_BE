@@ -44,9 +44,28 @@ const getAllTransactionsByUser = async (user_id, product_id) => {
     });
 };
 
-
+const getAllProductByOrder = (order_id) => {
+    return new Promise((resolve, reject) => {
+        const query = `SELECT * FROM transactions WHERE order_id =?`;
+        pool.query(query, [order_id], (err, result) => {
+            if (err) {
+                return reject({
+                    status: "ERROR",
+                    message: "Lấy tất cả đơn hàng không thành công",
+                    error: err,
+                });
+            }
+            resolve({
+                status: "OK",
+                message: "SUCCESS",
+                data: result,
+            });
+        });
+    });
+}
 
 module.exports = {
     createTransactions,
-    getAllTransactionsByUser
+    getAllTransactionsByUser,
+    getAllProductByOrder,
 };

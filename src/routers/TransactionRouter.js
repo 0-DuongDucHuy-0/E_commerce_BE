@@ -8,5 +8,6 @@ const {
 
 router.post("/create-transaction", TransactionController.createTransactions);
 router.post("/get-all-transactions-by-user", TransactionController.getAllTransactionsByUser);
+router.get("/get-all-product-by-order/:id", TransactionController.getAllProductByOrder);
 
 module.exports = router;

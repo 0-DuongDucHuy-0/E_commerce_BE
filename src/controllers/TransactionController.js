@@ -73,7 +73,27 @@ const getAllTransactionsByUser = async (req, res) => {
     }
 }
 
+const getAllProductByOrder = async (req, res) => {
+    try {
+        const order_id = req.params.id;
+        console.log("ABS", order_id);
+        if (!order_id) {
+            return res.status(200).json({
+                status: "ERR",
+                message: "Chưa có order_id",
+            });
+        }
+        const result = await TransactionServices.getAllProductByOrder(order_id);
+        return res.status(200).json(result);
+    } catch (e) {
+        return res.status(404).json({
+            message: e,
+        });
+    }
+}
+
 module.exports = {
     createTransactions,
-    getAllTransactionsByUser
+    getAllTransactionsByUser,
+    getAllProductByOrder
 }
