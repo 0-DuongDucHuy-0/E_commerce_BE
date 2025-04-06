@@ -85,9 +85,29 @@ const getDetailProduct = async (product_id) => {
     });
 }
 
+const getAllProductByCategory = async (category_id) => {
+    return new Promise(async (resolve, reject) => {
+        const query = "SELECT * FROM products WHERE category_id =?";
+        await pool.query(query, [category_id], (err, data) => {
+            if (err) {
+                return reject({
+                    status: "ERROR",
+                    message: "Lấy danh sách sản phẩm theo danh mục không thành công",
+                    error: err,
+                });
+            }
+            resolve({
+                status: "OK",
+                message: "SUCCESS",
+                data: data,
+            });
+        });
+    });
+}
 
 module.exports = {
     createProduct,
     getAllProducts,
-    getDetailProduct
+    getDetailProduct,
+    getAllProductByCategory
 };

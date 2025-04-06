@@ -49,8 +49,27 @@ const getDetailProduct = async (req, res) => {
     }
 }
 
+const getAllProductByCategory = async (req, res) => {
+    try {
+        const category_id = req.params.id;
+        if (!category_id) {
+            return res.status(200).json({
+                status: "ERR",
+                message: "Chưa có category id",
+            });
+        }
+        const result = await ProductServices.getAllProductByCategory(category_id);
+        return res.status(200).json(result);
+    } catch (e) {
+        return res.status(404).json({
+            message: e,
+        });
+    }
+}
+
 module.exports = {
     createProduct,
     getAllProducts,
-    getDetailProduct
+    getDetailProduct,
+    getAllProductByCategory
 }
